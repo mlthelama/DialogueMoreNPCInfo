@@ -53,6 +53,27 @@ public:
         return getValueFromMap(_relationStringMap, GetRelationshipRank(0, 0, a_target, player));
     }
 
+    static std::string_view getIsTrainer(RE::TESNPC*& a_tesnpc) {
+        auto teachesSkill = a_tesnpc->npcClass->data.teaches;
+        return getValueFromMap(_teachingSkillStringMap, teachesSkill.get());
+        /*if (teachesSkill) {
+            return getValueFromMap(_teachingSkillStringMap, teachesSkill.get());
+        }
+        return "";*/
+    }
+
+    static uint8_t getMaxTrainingsLevel(RE::TESNPC*& a_tesnpc) { return a_tesnpc->npcClass->data.maximumTrainingLevel; }
+
+    static bool isVendor(RE::Actor*& a_actor) {
+        auto vendorFaction = a_actor->vendorFaction;
+        if (vendorFaction) {
+            //we could get more info but for now it will do
+            //return vendorFaction->IsVendor();
+            return true;
+        }
+        return false;
+    }
+
 private:
     ActorData() = default;
     ActorData(const ActorData&) = delete;
@@ -163,5 +184,26 @@ private:
         { RelationshipRanks::Confidant, "Confidant" },
         { RelationshipRanks::Ally, "Ally" },
         { RelationshipRanks::Lover, "Lover" },
+    };
+
+    inline static std::map<RE::CLASS_DATA::Skill, std::string_view> _teachingSkillStringMap = {
+        { RE::CLASS_DATA::Skill::kOneHanded, "OneHanded" },
+        { RE::CLASS_DATA::Skill::kTwoHanded, "TwoHanded" },
+        { RE::CLASS_DATA::Skill::kArchery, "Archery" },
+        { RE::CLASS_DATA::Skill::kBlock, "Block" },
+        { RE::CLASS_DATA::Skill::kSmithing, "Smithing" },
+        { RE::CLASS_DATA::Skill::kHeavyArmor, "HeavyArmor" },
+        { RE::CLASS_DATA::Skill::kLightArmor, "LightArmor" },
+        { RE::CLASS_DATA::Skill::kPickpocket, "Pickpocket" },
+        { RE::CLASS_DATA::Skill::kLockpicking, "Lockpicking" },
+        { RE::CLASS_DATA::Skill::kSneak, "Sneak" },
+        { RE::CLASS_DATA::Skill::kAlchemy, "Alchemy" },
+        { RE::CLASS_DATA::Skill::kSpeech, "Speech" },
+        { RE::CLASS_DATA::Skill::kAlteration, "Alteration" },
+        { RE::CLASS_DATA::Skill::kConjuration, "Conjuration" },
+        { RE::CLASS_DATA::Skill::kDestruction, "Destruction" },
+        { RE::CLASS_DATA::Skill::kIllusion, "Illusion" },
+        { RE::CLASS_DATA::Skill::kRestoration, "Restoration" },
+        { RE::CLASS_DATA::Skill::kEnchanting, "Enchanting" }
     };
 };

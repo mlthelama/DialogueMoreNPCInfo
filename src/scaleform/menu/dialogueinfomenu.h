@@ -160,21 +160,27 @@ namespace Scaleform {
                 element_t{ std::ref(_className), "_root.rootObj.className"sv },
                 element_t{ std::ref(_level), "_root.rootObj.level"sv },
                 element_t{ std::ref(_faction), "_root.rootObj.faction"sv },
+                element_t{ std::ref(_trainer), "_root.rootObj.trainer"sv },
+                element_t{ std::ref(_vendor), "_root.rootObj.vendor"sv },
                 element_t{ std::ref(_morality), "_root.rootObj.morality"sv },
                 element_t{ std::ref(_assistence), "_root.rootObj.assistance"sv },
                 element_t{ std::ref(_confidence), "_root.rootObj.confidence"sv },
                 element_t{ std::ref(_aggression), "_root.rootObj.aggression"sv },
                 element_t{ std::ref(_mood), "_root.rootObj.mood"sv },
+                element_t{ std::ref(_relation), "_root.rootObj.relation"sv },
                 element_t{ std::ref(_nameValue), "_root.rootObj.nameValue"sv },
                 element_t{ std::ref(_genderValue), "_root.rootObj.genderValue"sv },
                 element_t{ std::ref(_classNameValue), "_root.rootObj.classNameValue"sv },
                 element_t{ std::ref(_levelValue), "_root.rootObj.levelValue"sv },
                 element_t{ std::ref(_factionValue), "_root.rootObj.factionValue"sv },
+                element_t{ std::ref(_trainerValue), "_root.rootObj.trainerValue"sv },
+                element_t{ std::ref(_vendorValue), "_root.rootObj.vendorValue"sv },
                 element_t{ std::ref(_moralityValue), "_root.rootObj.moralityValue"sv },
                 element_t{ std::ref(_assistenceValue), "_root.rootObj.assistanceValue"sv },
                 element_t{ std::ref(_confidenceValue), "_root.rootObj.confidenceValue"sv },
                 element_t{ std::ref(_aggressionValue), "_root.rootObj.aggressionValue"sv },
                 element_t{ std::ref(_moodValue), "_root.rootObj.moodValue"sv },
+                element_t{ std::ref(_relationValue), "_root.rootObj.relationValue"sv },
             };
 
             for (const auto& [object, path] : objects) {
@@ -215,12 +221,15 @@ namespace Scaleform {
             UpdateText(_className, "Class");
             UpdateText(_level, "Level");
             UpdateText(_faction, "Faction");
+            UpdateText(_trainer, "Trainer");
+            UpdateText(_vendor, "Vendor");
 
             UpdateText(_morality, "Morality");
             UpdateText(_assistence, "Assistance");
             UpdateText(_confidence, "Confidence");
             UpdateText(_aggression, "Aggression");
             UpdateText(_mood, "Mood");
+            UpdateText(_relation, "Relationship");
         }
 
         void FillFields() {
@@ -235,18 +244,27 @@ namespace Scaleform {
                     Util::StringUtil::intToHex(actorBase->formID));
                 UpdateText(_race, actor->GetRace()->GetName());
                 UpdateText(_nameValue, actor->GetName());
+                //icon for gender
                 UpdateText(_genderValue, ActorData::getGender(actorBase));
                 UpdateText(_classNameValue, actorBase->npcClass->GetName());
                 UpdateText(_levelValue, std::to_string(actor->GetLevel()));
                 UpdateText(_factionValue, ActorData::getFaction(actor));
+
+                auto teaches = ActorData::getIsTrainer(actorBase);
+                auto maxTraing = ActorData::getMaxTrainingsLevel(actorBase);
+                if (!teaches.empty() && maxTraing > 0) {
+                    UpdateText(_trainerValue, fmt::format(FMT_STRING("{}, Max {}"), teaches, maxTraing));
+                } else {
+                    UpdateText(_trainerValue, "-");
+                }
+                UpdateText(_vendorValue, ActorData::isVendor(actor) ? "Yes" : "No");
+
                 UpdateText(_moralityValue, ActorData::getMorality(actorBase));
                 UpdateText(_assistenceValue, ActorData::getAssistance(actorBase));
                 UpdateText(_confidenceValue, ActorData::getConfidence(actorBase));
                 UpdateText(_aggressionValue, ActorData::getAggression(actorBase));
                 UpdateText(_moodValue, ActorData::getMood(actorBase));
-
-                auto relationshipRank = ActorData::getRelationshipRankString(actor);
-                logger::trace("Relationship is {}"sv, relationshipRank);
+                UpdateText(_relationValue, ActorData::getRelationshipRankString(actor));
             }
 
             logger::trace("done filling the fields with data"sv);
@@ -273,23 +291,29 @@ namespace Scaleform {
         CLIK::TextField _className;
         CLIK::TextField _level;
         CLIK::TextField _faction;
+        CLIK::TextField _trainer;
+        CLIK::TextField _vendor;
 
         CLIK::TextField _morality;
         CLIK::TextField _assistence;
         CLIK::TextField _confidence;
         CLIK::TextField _aggression;
         CLIK::TextField _mood;
+        CLIK::TextField _relation;
 
         CLIK::TextField _nameValue;
         CLIK::TextField _genderValue;
         CLIK::TextField _classNameValue;
         CLIK::TextField _levelValue;
         CLIK::TextField _factionValue;
+        CLIK::TextField _trainerValue;
+        CLIK::TextField _vendorValue;
 
         CLIK::TextField _moralityValue;
         CLIK::TextField _assistenceValue;
         CLIK::TextField _confidenceValue;
         CLIK::TextField _aggressionValue;
         CLIK::TextField _moodValue;
+        CLIK::TextField _relationValue;
     };
 }
