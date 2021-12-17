@@ -187,6 +187,7 @@ namespace Scaleform {
             _rootObj.Visible(false);
 
             UpdateTitleFields();
+            FillFields();
 
             _view->SetVisible(true);
             _rootObj.Visible(true);
@@ -230,9 +231,8 @@ namespace Scaleform {
                 auto actorBase = actor->GetActorBase();
                 logger::trace("got Actor {}, formid {}, baseformid {}"sv,
                     actor->GetName(),
-                    Util::intToHex(actor->formID),
-                    Util::intToHex(actorBase->formID));
-
+                    Util::StringUtil::intToHex(actor->formID),
+                    Util::StringUtil::intToHex(actorBase->formID));
                 UpdateText(_race, actor->GetRace()->GetName());
                 UpdateText(_nameValue, actor->GetName());
                 UpdateText(_genderValue, ActorData::getGender(actorBase));
@@ -245,24 +245,8 @@ namespace Scaleform {
                 UpdateText(_aggressionValue, ActorData::getAggression(actorBase));
                 UpdateText(_moodValue, ActorData::getMood(actorBase));
 
-                //actorBase->npcClass->data.maximumTrainingLevel;
-                //add trainer, max train level, trainer for what
-                //add aggression type
-                //auto test = actor->As<RE::TESNPC*>();
-                /*this works with the refid, we do not really need that*/
-                /* auto relation = actorBase->relationships;
-                if (relation) {
-                    //auto player = RE::PlayerCharacter::GetSingleton();
-                    logger::trace("relation list size {}"sv, relation->size());
-                    for (auto it = relation->begin(); it != relation->end(); ++it) {
-                        auto i = *it;
-
-                        logger::trace("npc1 {}, npc2 {}, level {}"sv,
-                            i->npc1->GetName(),
-                            i->npc2->GetName(),
-                            i->level.underlying());
-                    }
-                }*/
+                auto relationshipRank = ActorData::getRelationshipRankString(actor);
+                logger::trace("Relationship is {}"sv, relationshipRank);
             }
 
             logger::trace("done filling the fields with data"sv);

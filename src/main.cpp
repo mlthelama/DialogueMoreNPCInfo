@@ -1,14 +1,12 @@
-#include "event.h"
-#include "setting/setting.h"
-#include "util/constant.h"
 #include "hook.h"
 #include "scaleform/scaleform.h"
+#include "setting/setting.h"
+#include "util/constant.h"
 
 void MessageHandler(SKSE::MessagingInterface::Message* a_msg) {
     switch (a_msg->type) {
         case SKSE::MessagingInterface::kDataLoaded:
             logger::info("Data loaded"sv);
-            Event::SinkEventHandlers();
             Hook::InstallHooks();
             Scaleform::Register();
             break;
@@ -75,15 +73,15 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
         SKSE::Init(a_skse);
 
         switch (*Setting::logLevel) {
-            case _constLogTrace:
+            case Util::_constLogTrace:
                 spdlog::set_level(spdlog::level::trace);
                 spdlog::flush_on(spdlog::level::trace);
                 break;
-            case _constLogDebug:
+            case Util::_constLogDebug:
                 spdlog::set_level(spdlog::level::debug);
                 spdlog::flush_on(spdlog::level::debug);
                 break;
-            case _constLogInfo:
+            case Util::_constLogInfo:
                 spdlog::set_level(spdlog::level::info);
                 spdlog::flush_on(spdlog::level::info);
                 break;

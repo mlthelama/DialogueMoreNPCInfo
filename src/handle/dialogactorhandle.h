@@ -8,7 +8,7 @@ namespace Handle {
             return std::addressof(singleton);
         }
 
-        void initActor(RE::Actor* a_actor) { 
+        void initActor(RE::Actor* a_actor) {
             if (!this->_data) {
                 this->_data = new DialogActorHandleData();
             }
@@ -18,7 +18,7 @@ namespace Handle {
             data->actor = a_actor;
         }
 
-        RE::Actor* getActor() { 
+        RE::Actor* getActor() {
             DialogActorHandleData* data = this->_data;
             if (data && data->actor) {
                 return data->actor;

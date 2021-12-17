@@ -36,7 +36,7 @@ public:
                 //auto rankData(a_faction->rankData); normaly not needed
                 //logger::trace("name {}, formId {}, rank {}"sv, name, intToHex(formID), a_rank);
                 if (std::find(_factionFormList.begin(), _factionFormList.end(), formID) != _factionFormList.end()) {
-                    logger::trace("name {}, formId {}, rank {}"sv, name, Util::intToHex(formID), a_rank);
+                    logger::trace("name {}, formId {}, rank {}"sv, name, Util::StringUtil::intToHex(formID), a_rank);
                     faction = name;
                     return true;
                 }
@@ -44,6 +44,13 @@ public:
             return false;
         });
         return faction;
+    }
+
+    static std::string_view getRelationshipRankString(RE::Actor*& a_target) {
+        //we want the relation to the player, so get him/her
+        auto player = RE::PlayerCharacter::GetSingleton();
+        //testing has shown we need 2 more arguments in front, so we add them
+        return getValueFromMap(_relationStringMap, GetRelationshipRank(0, 0, a_target, player));
     }
 
 private:
@@ -125,5 +132,36 @@ private:
         { 0x04031786 },  //skaal
         { 0x02003376 },  //vampire, does not have a faction name
         { 0x02003375 },  //dawnguard, does not have a faction name
+    };
+
+    enum class RelationshipRanks {
+        Archnemesis = -4,
+        Enemy = -3,
+        Foe = -2,
+        Rival = -1,
+        Acquaintance = 0,
+        Friend = 1,
+        Confidant = 2,
+        Ally = 3,
+        Lover = 4
+    };
+
+    static RelationshipRanks
+        GetRelationshipRank(uint32_t a_arg1, uint32_t a_arg2, RE::Actor* a_source, RE::Actor* a_target) {
+        using func_t = decltype(&GetRelationshipRank);
+        REL::Relocation<func_t> func{ REL::ID(53898) };
+        return static_cast<RelationshipRanks>(func(a_arg1, a_arg2, a_source, a_target));
+    }
+
+    inline static std::map<RelationshipRanks, std::string_view> _relationStringMap = {
+        { RelationshipRanks::Archnemesis, "Archnemesis" },
+        { RelationshipRanks::Enemy, "Enemy" },
+        { RelationshipRanks::Foe, "Foe" },
+        { RelationshipRanks::Rival, "Rival" },
+        { RelationshipRanks::Acquaintance, "Acquaintance" },
+        { RelationshipRanks::Friend, "Friend" },
+        { RelationshipRanks::Confidant, "Confidant" },
+        { RelationshipRanks::Ally, "Ally" },
+        { RelationshipRanks::Lover, "Lover" },
     };
 };

@@ -1,6 +1,6 @@
 #pragma once
-#include "scaleform/menu/dialoginfomenu.h"
 #include "handle/dialogactorhandle.h"
+#include "scaleform/menu/dialoginfomenu.h"
 
 namespace Hook {
     class DialogMenuHook : public RE::DialogueMenu {
@@ -22,7 +22,6 @@ namespace Hook {
                     dialogTarget = dialog->lastSpeaker.get().get();
                 }
 
-
                 if (dialogTarget && dialogTarget->formType == RE::FormType::ActorCharacter) {
                     Handle::DialogActorHandle::GetSingleton()->initActor(dialogTarget->As<RE::Actor>());
                     auto player = RE::PlayerCharacter::GetSingleton();
@@ -30,16 +29,10 @@ namespace Hook {
 
                     if (!Scaleform::DialogInfoMenu::IsMenuOpen()) {
                         Scaleform::DialogInfoMenu::Open();
-                        auto task = SKSE::GetTaskInterface();
-                        task->AddUITask([]() {
-                            auto menu = RE::UI::GetSingleton()->GetMenu<Scaleform::DialogInfoMenu>(
-                                Scaleform::DialogInfoMenu::MENU_NAME);
-                            if (menu) {
-                                menu->RefreshItems();
-                            }
-                        });
                     }
                 }
+            } else if (a_message.type.get() == RE::UI_MESSAGE_TYPE::kHide) {
+                Scaleform::DialogInfoMenu::Close();
             }
 
             return _process(this, a_message);
@@ -51,7 +44,7 @@ namespace Hook {
     };
 
     void InstallDialogMenuHook() {
-        REL::Relocation<std::uintptr_t> vTable_dm(REL::ID{ 268589 });
+        REL::Relocation<std::uintptr_t> vTable_dm(REL::ID{ 268589 });  //215255 AE
         DialogMenuHook::_process = vTable_dm.write_vfunc(0x4, &DialogMenuHook::ProcessMessageHook);
         DialogMenuHook::_advance = vTable_dm.write_vfunc(0x5, &DialogMenuHook::AdvanceMovieHook);
     }

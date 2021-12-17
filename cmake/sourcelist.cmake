@@ -6,8 +6,6 @@ set(sources ${sources}
 	src/CLIK/TextField.h
 	src/PCH.h
 	src/data/actordata.h
-	src/event.h
-	src/event/menuevent.h
 	src/handle/dialogactorhandle.h
 	src/hook.h
 	src/hook/dialogmenu.h
