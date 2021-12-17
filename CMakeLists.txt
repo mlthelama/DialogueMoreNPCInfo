@@ -29,7 +29,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STR
 # ---- Project ----
 
 project(
-	DialogMoreNPCInfo
+	DialogueMoreNPCInfo
 	VERSION 1.0.0.0
 	LANGUAGES CXX
 )
@@ -111,7 +111,7 @@ add_library(
 	${CMAKE_CURRENT_BINARY_DIR}/version.rc
 	.clang-format
     .editorconfig
-    DialogMoreNPCInfo.toml
+    DialogueMoreNPCInfo.toml
 )
 
 target_compile_features(

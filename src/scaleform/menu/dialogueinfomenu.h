@@ -3,14 +3,14 @@
 #include "CLIK/MovieClip.h"
 #include "CLIK/TextField.h"
 #include "data/actordata.h"
-#include "handle/dialogactorhandle.h"
+#include "handle/dialogueactorhandle.h"
 #include "util/util.h"
 
 namespace Scaleform {
 
-    class DialogInfoMenu : public RE::IMenu {
+    class DialogueInfoMenu : public RE::IMenu {
     public:
-        static constexpr std::string_view MENU_NAME = "DialogInfoMenu";
+        static constexpr std::string_view MENU_NAME = "DialogueInfoMenu";
         static constexpr std::string_view FILE_NAME = MENU_NAME;
 
         static void Register() {
@@ -19,14 +19,14 @@ namespace Scaleform {
         }
 
         static void Open() {
-            if (!DialogInfoMenu::IsMenuOpen()) {
+            if (!DialogueInfoMenu::IsMenuOpen()) {
                 logger::debug("Open Menu {}"sv, MENU_NAME);
                 RE::UIMessageQueue::GetSingleton()->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
             }
         }
 
         static void Close() {
-            if (DialogInfoMenu::IsMenuOpen()) {
+            if (DialogueInfoMenu::IsMenuOpen()) {
                 logger::debug("Close Menu {}"sv, MENU_NAME);
                 RE::UIMessageQueue::GetSingleton()->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
             }
@@ -47,7 +47,7 @@ namespace Scaleform {
         }
 
     protected:
-        DialogInfoMenu() {
+        DialogueInfoMenu() {
             using Context = RE::UserEvents::INPUT_CONTEXT_ID;
             using Flag = RE::UI_MENU_FLAGS;
 
@@ -89,17 +89,17 @@ namespace Scaleform {
             logger::debug("Set everything for Menu {}"sv, MENU_NAME);
         }
 
-        DialogInfoMenu(const DialogInfoMenu&) = delete;
-        DialogInfoMenu(DialogInfoMenu&&) = delete;
+        DialogueInfoMenu(const DialogueInfoMenu&) = delete;
+        DialogueInfoMenu(DialogueInfoMenu&&) = delete;
 
-        ~DialogInfoMenu() = default;
+        ~DialogueInfoMenu() = default;
 
-        DialogInfoMenu& operator=(const DialogInfoMenu&) = delete;
-        DialogInfoMenu& operator=(DialogInfoMenu&&) = delete;
+        DialogueInfoMenu& operator=(const DialogueInfoMenu&) = delete;
+        DialogueInfoMenu& operator=(DialogueInfoMenu&&) = delete;
 
-        static stl::owner<RE::IMenu*> Creator() { return new DialogInfoMenu(); }
+        static stl::owner<RE::IMenu*> Creator() { return new DialogueInfoMenu(); }
 
-        void PostCreate() override { DialogInfoMenu::OnOpen(); }
+        void PostCreate() override { DialogueInfoMenu::OnOpen(); }
 
         //might not work that well if DialogMenu is open
         RE::UI_MESSAGE_RESULTS ProcessMessage(RE::UIMessage& a_message) override {
@@ -111,7 +111,7 @@ namespace Scaleform {
                     return RE::IMenu::ProcessMessage(a_message);
             }*/
 
-            if (a_message.menu == DialogInfoMenu::MENU_NAME) {
+            if (a_message.menu == DialogueInfoMenu::MENU_NAME) {
                 return RE::UI_MESSAGE_RESULTS::kHandled;
             }
             return RE::UI_MESSAGE_RESULTS::kPassOn;
@@ -136,7 +136,7 @@ namespace Scaleform {
                 std::vsnprintf(buf.data(), buf.size(), fmt.c_str(), args);
                 va_end(args);
 
-                logger::info("{}: {}"sv, DialogInfoMenu::MENU_NAME, buf.data());
+                logger::info("{}: {}"sv, DialogueInfoMenu::MENU_NAME, buf.data());
             }
         };
 
@@ -226,7 +226,7 @@ namespace Scaleform {
         void FillFields() {
             logger::trace("going to fill the fields with data"sv);
 
-            auto actor = Handle::DialogActorHandle::GetSingleton()->getActor();
+            auto actor = Handle::DialogueActorHandle::GetSingleton()->getActor();
             if (actor) {
                 auto actorBase = actor->GetActorBase();
                 logger::trace("got Actor {}, formid {}, baseformid {}"sv,
@@ -258,7 +258,7 @@ namespace Scaleform {
             assert(a_params.GetArgCount() == 1);
             assert(a_params[0].IsString());
 
-            logger::debug("{}: {}"sv, DialogInfoMenu::MENU_NAME, a_params[0].GetString());
+            logger::debug("{}: {}"sv, DialogueInfoMenu::MENU_NAME, a_params[0].GetString());
         }
 
         RE::GPtr<RE::GFxMovieView> _view;

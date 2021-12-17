@@ -1,9 +1,9 @@
 #pragma once
-#include "handle/dialogactorhandle.h"
-#include "scaleform/menu/dialoginfomenu.h"
+#include "handle/dialogueactorhandle.h"
+#include "scaleform/menu/dialogueinfomenu.h"
 
 namespace Hook {
-    class DialogMenuHook : public RE::DialogueMenu {
+    class DialogueMenuHook : public RE::DialogueMenu {
     public:
         using DialogueProcessMessage = decltype(&RE::DialogueMenu::ProcessMessage);
         inline static REL::Relocation<DialogueProcessMessage> _process;
@@ -23,16 +23,16 @@ namespace Hook {
                 }
 
                 if (dialogTarget && dialogTarget->formType == RE::FormType::ActorCharacter) {
-                    Handle::DialogActorHandle::GetSingleton()->initActor(dialogTarget->As<RE::Actor>());
+                    Handle::DialogueActorHandle::GetSingleton()->initActor(dialogTarget->As<RE::Actor>());
                     auto player = RE::PlayerCharacter::GetSingleton();
                     logger::trace("Player is {}, Target is {}"sv, player->GetName(), dialogTarget->GetName());
 
-                    if (!Scaleform::DialogInfoMenu::IsMenuOpen()) {
-                        Scaleform::DialogInfoMenu::Open();
+                    if (!Scaleform::DialogueInfoMenu::IsMenuOpen()) {
+                        Scaleform::DialogueInfoMenu::Open();
                     }
                 }
             } else if (a_message.type.get() == RE::UI_MESSAGE_TYPE::kHide) {
-                Scaleform::DialogInfoMenu::Close();
+                Scaleform::DialogueInfoMenu::Close();
             }
 
             return _process(this, a_message);
@@ -43,9 +43,10 @@ namespace Hook {
         }
     };
 
-    void InstallDialogMenuHook() {
+    void InstallDialogueMenuHook() {
+        //Dialoguemenu
         REL::Relocation<std::uintptr_t> vTable_dm(REL::ID{ 268589 });  //215255 AE
-        DialogMenuHook::_process = vTable_dm.write_vfunc(0x4, &DialogMenuHook::ProcessMessageHook);
-        DialogMenuHook::_advance = vTable_dm.write_vfunc(0x5, &DialogMenuHook::AdvanceMovieHook);
+        DialogueMenuHook::_process = vTable_dm.write_vfunc(0x4, &DialogueMenuHook::ProcessMessageHook);
+        DialogueMenuHook::_advance = vTable_dm.write_vfunc(0x5, &DialogueMenuHook::AdvanceMovieHook);
     }
 }

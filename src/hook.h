@@ -1,9 +1,9 @@
 #pragma once
-#include "hook/dialogmenu.h"
+#include "hook/dialoguemenu.h"
 
 namespace Hook {
     void InstallHooks() {
-        Hook::InstallDialogMenuHook();
+        Hook::InstallDialogueMenuHook();
         logger::info("Added DialogMenuHook"sv);
     }
 }

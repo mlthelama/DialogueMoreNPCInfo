@@ -8,7 +8,7 @@ struct Setting {
 
     static void load() {
         try {
-            const auto table = toml::parse_file("Data/SKSE/Plugins/DialogMoreNPCInfo.toml"s);
+            const auto table = toml::parse_file("Data/SKSE/Plugins/DialogueMoreNPCInfo.toml"s);
             for (const auto& setting : ISetting::get_settings()) { setting->load(table); }
         } catch (const toml::parse_error& ex) {
             std::ostringstream ss;

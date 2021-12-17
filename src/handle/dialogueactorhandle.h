@@ -1,10 +1,10 @@
 #pragma once
 
 namespace Handle {
-    class DialogActorHandle {
+    class DialogueActorHandle {
     public:
-        static DialogActorHandle* GetSingleton() {
-            static DialogActorHandle singleton;
+        static DialogueActorHandle* GetSingleton() {
+            static DialogueActorHandle singleton;
             return std::addressof(singleton);
         }
 
@@ -27,10 +27,10 @@ namespace Handle {
         }
 
     private:
-        DialogActorHandle(){};
-        ~DialogActorHandle(){};
-        DialogActorHandle(const DialogActorHandle&) = delete;
-        DialogActorHandle& operator=(const DialogActorHandle&) = delete;
+        DialogueActorHandle(){};
+        ~DialogueActorHandle(){};
+        DialogueActorHandle(const DialogueActorHandle&) = delete;
+        DialogueActorHandle& operator=(const DialogueActorHandle&) = delete;
 
         struct DialogActorHandleData {
             RE::Actor* actor = nullptr;

@@ -6,11 +6,11 @@ set(sources ${sources}
 	src/CLIK/TextField.h
 	src/PCH.h
 	src/data/actordata.h
-	src/handle/dialogactorhandle.h
+	src/handle/dialogueactorhandle.h
 	src/hook.h
-	src/hook/dialogmenu.h
+	src/hook/dialoguemenu.h
 	src/main.cpp
-	src/scaleform/menu/dialoginfomenu.h
+	src/scaleform/menu/dialogueinfomenu.h
 	src/scaleform/scaleform.h
 	src/setting/setting.h
 	src/util/constant.h

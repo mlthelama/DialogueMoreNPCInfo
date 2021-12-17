@@ -1,7 +1,7 @@
-# DialogMoreNPCInfo
+# DialogueMoreNPCInfo
 
 ## Nexus Mods
-* [DialogMoreNPCInfo](https://www.nexusmods.com/skyrimspecialedition/mods/?)
+* [DialogueMoreNPCInfo](https://www.nexusmods.com/skyrimspecialedition/mods/?)
 
 ## End User Dependencies
 * [SKSE64](https://skse.silverlock.org/)
@@ -15,8 +15,8 @@
 
 ## Building
 ```
-git clone https://github.com/mlthelama/DialogMoreNPCInfo.git
-cd DialogMoreNPCInfo
+git clone https://github.com/mlthelama/DialogueMoreNPCInfo.git
+cd DialogueMoreNPCInfo
 
 git submodule update --init --recursive
 cmake -B build -S .
