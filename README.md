@@ -1,6 +1,6 @@
 # DialogueMoreNPCInfo
 
-## Nexus Mods
+## Nexus Mods (Not yet there)
 * [DialogueMoreNPCInfo](https://www.nexusmods.com/skyrimspecialedition/mods/?)
 
 ## End User Dependencies
