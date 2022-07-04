@@ -251,12 +251,13 @@ namespace Scaleform {
                 UpdateText(_factionValue, ActorData::getFaction(actor));
 
                 auto teaches = ActorData::getIsTrainer(actorBase);
-                auto maxTraing = ActorData::getMaxTrainingsLevel(actorBase);
-                if (!teaches.empty() && maxTraing > 0) {
-                    UpdateText(_trainerValue, fmt::format(FMT_STRING("{}, Max {}"), teaches, maxTraing));
+                auto maxTraining = ActorData::getMaxTrainingsLevel(actorBase);
+                if (!teaches.empty() && maxTraining > 0) {
+                    UpdateText(_trainerValue, fmt::format(FMT_STRING("{}, Max {}"), teaches, maxTraining));
                 } else {
                     UpdateText(_trainerValue, "-");
                 }
+
                 UpdateText(_vendorValue, ActorData::isVendor(actor) ? "Yes" : "No");
 
                 UpdateText(_moralityValue, ActorData::getMorality(actorBase));

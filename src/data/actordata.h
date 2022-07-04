@@ -55,11 +55,10 @@ public:
 
     static std::string_view getIsTrainer(RE::TESNPC*& a_tesnpc) {
         auto teachesSkill = a_tesnpc->npcClass->data.teaches;
-        return getValueFromMap(_teachingSkillStringMap, teachesSkill.get());
-        /*if (teachesSkill) {
+        if (teachesSkill) {
             return getValueFromMap(_teachingSkillStringMap, teachesSkill.get());
         }
-        return "";*/
+        return "";
     }
 
     static uint8_t getMaxTrainingsLevel(RE::TESNPC*& a_tesnpc) { return a_tesnpc->npcClass->data.maximumTrainingLevel; }
