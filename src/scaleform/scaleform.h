@@ -1,9 +1,9 @@
 #pragma once
 #include "scaleform/menu/dialogueinfomenu.h"
 
-namespace Scaleform {
-    void Register() {
-        DialogueInfoMenu::Register();
+namespace scaleform {
+    inline void Register() {
+        dialogue_info_menu::Register();
         logger::info("Registered all forms");
     }
 }

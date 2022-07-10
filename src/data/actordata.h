@@ -1,42 +1,45 @@
 #pragma once
 #include "util/util.h"
 
-class ActorData {
+class actor_data final {
 public:
-    static std::string_view getGender(RE::TESNPC*& a_tesnpc) {
-        return getValueFromMap(_genderStringMap, a_tesnpc->GetSex());
+    static std::string_view get_gender(RE::TESNPC*& a_tesnpc) {
+        return get_value_from_map(gender_string_map_, a_tesnpc->GetSex());
     }
 
-    static std::string_view getMorality(RE::TESNPC*& a_tesnpc) {
-        return getValueFromMap(_moralityStringMap, a_tesnpc->GetMoralityLevel());
+    static std::string_view get_morality(RE::TESNPC*& a_tesnpc) {
+        return get_value_from_map(morality_string_map_, a_tesnpc->GetMoralityLevel());
     }
 
-    static std::string_view getAssistance(RE::TESNPC*& a_tesnpc) {
-        return getValueFromMap(_assistanceStringMap, a_tesnpc->GetAssistanceLevel());
+    static std::string_view get_assistance(RE::TESNPC*& a_tesnpc) {
+        return get_value_from_map(assistance_string_map_, a_tesnpc->GetAssistanceLevel());
     }
 
-    static std::string_view getConfidence(RE::TESNPC*& a_tesnpc) {
-        return getValueFromMap(_confidenceStringMap, a_tesnpc->GetConfidenceLevel());
+    static std::string_view get_confidence(RE::TESNPC*& a_tesnpc) {
+        return get_value_from_map(confidence_string_map_, a_tesnpc->GetConfidenceLevel());
     }
 
-    static std::string_view getAggression(RE::TESNPC*& a_tesnpc) {
-        return getValueFromMap(_aggressionStringMap, a_tesnpc->GetAggressionLevel());
+    static std::string_view get_aggression(RE::TESNPC*& a_tesnpc) {
+        return get_value_from_map(aggression_string_map_, a_tesnpc->GetAggressionLevel());
     }
 
-    static std::string_view getMood(RE::TESNPC*& a_tesnpc) {
-        return getValueFromMap(_moodStringMap, a_tesnpc->GetMoodLevel());
+    static std::string_view get_mood(RE::TESNPC*& a_tesnpc) {
+        return get_value_from_map(mood_string_map_, a_tesnpc->GetMoodLevel());
     }
 
-    static std::string_view getFaction(RE::Actor*& a_actor) {
+    static std::string_view get_faction(RE::Actor*& a_actor) {
         auto faction = "-";
-        a_actor->VisitFactions([&](RE::TESFaction* a_faction, int8_t a_rank) {
+        a_actor->VisitFactions([&](const RE::TESFaction* a_faction, int8_t a_rank) {
             if (a_faction && a_rank > -1) {
                 const auto name(a_faction->GetName());
-                const auto formID(a_faction->GetFormID());
                 //auto rankData(a_faction->rankData); normaly not needed
                 //logger::trace("name {}, formId {}, rank {}"sv, name, intToHex(formID), a_rank);
-                if (std::find(_factionFormList.begin(), _factionFormList.end(), formID) != _factionFormList.end()) {
-                    logger::trace("name {}, formId {}, rank {}"sv, name, Util::StringUtil::intToHex(formID), a_rank);
+                if (const auto form_id(a_faction->GetFormID());
+                    std::ranges::find(faction_form_list_, form_id) != faction_form_list_.end()) {
+                    logger::trace("name {}, formId {}, rank {}"sv,
+                        name,
+                        util::string_util::int_to_hex(form_id),
+                        a_rank);
                     faction = name;
                     return true;
                 }
@@ -46,26 +49,27 @@ public:
         return faction;
     }
 
-    static std::string_view getRelationshipRankString(RE::Actor*& a_target) {
+    static std::string_view get_relationship_rank_string(RE::Actor*& a_target) {
         //we want the relation to the player, so get him/her
-        auto player = RE::PlayerCharacter::GetSingleton();
+        const auto player = RE::PlayerCharacter::GetSingleton();
         //testing has shown we need 2 more arguments in front, so we add them
-        return getValueFromMap(_relationStringMap, GetRelationshipRank(0, 0, a_target, player));
+        return get_value_from_map(relation_string_map_, get_relationship_rank(0, 0, a_target, player));
     }
 
-    static std::string_view getIsTrainer(RE::TESNPC*& a_tesnpc) {
-        auto teachesSkill = a_tesnpc->npcClass->data.teaches;
-        if (teachesSkill) {
-            return getValueFromMap(_teachingSkillStringMap, teachesSkill.get());
+    static std::string_view get_is_trainer(RE::TESNPC*& a_tesnpc) {
+        const auto teaches_skill = a_tesnpc->npcClass->data.teaches;
+        if (teaches_skill) {
+            return get_value_from_map(_teachingSkillStringMap, teaches_skill.get());
         }
         return "";
     }
 
-    static uint8_t getMaxTrainingsLevel(RE::TESNPC*& a_tesnpc) { return a_tesnpc->npcClass->data.maximumTrainingLevel; }
+    static uint8_t get_max_trainings_level(RE::TESNPC*& a_tesnpc) {
+        return a_tesnpc->npcClass->data.maximumTrainingLevel;
+    }
 
-    static bool isVendor(RE::Actor*& a_actor) {
-        auto vendorFaction = a_actor->vendorFaction;
-        if (vendorFaction) {
+    static bool is_vendor(RE::Actor*& a_actor) {
+        if (a_actor->vendorFaction) {
             //we could get more info but for now it will do
             //return vendorFaction->IsVendor();
             return true;
@@ -73,42 +77,42 @@ public:
         return false;
     }
 
-private:
-    ActorData() = default;
-    ActorData(const ActorData&) = delete;
-    ActorData(ActorData&&) = delete;
-    virtual ~ActorData() = default;
+    actor_data(const actor_data&) = delete;
+    actor_data(actor_data&&) = delete;
 
-    ActorData& operator=(const ActorData&) = delete;
-    ActorData& operator=(ActorData&&) = delete;
+    actor_data& operator=(const actor_data&) = delete;
+    actor_data& operator=(actor_data&&) = delete;
+private:
+    actor_data() = default;
+
+    ~actor_data() = default;
 
     template <typename T>
-    static std::string_view getValueFromMap(std::map<T, std::string_view>& a_map, T a_key) {
+    static std::string_view get_value_from_map(std::map<T, std::string_view>& a_map, T a_key) {
         //in case the value
-        if (a_map.find(a_key) == a_map.end()) {
+        if (!a_map.contains(a_key)) {
             return "";
-        } else {
-            return a_map.find(a_key)->second;
         }
+        return a_map.find(a_key)->second;
     }
 
     //TODO add translation/config for the strings
-    inline static std::map<RE::SEX, std::string_view> _genderStringMap = { { RE::SEX::kMale, "Male" },
-        { RE::SEX::kFemale, "Female" } };
+    inline static std::map<RE::SEX, std::string_view> gender_string_map_ = { { RE::SEX::kMale, "Male" },
+                                                                             { RE::SEX::kFemale, "Female" } };
 
-    inline static std::map<RE::ACTOR_MORALITY, std::string_view> _moralityStringMap = { { RE::ACTOR_MORALITY::kAnyCrime,
-                                                                                            "Any Crime" },
+    inline static std::map<RE::ACTOR_MORALITY, std::string_view> morality_string_map_ = {
+        { RE::ACTOR_MORALITY::kAnyCrime, "Any Crime" },
         { RE::ACTOR_MORALITY::kViolenceAgainstEnemy, "Violence Against Enemies" },
         { RE::ACTOR_MORALITY::kPropertyCrimeOnly, "Property Crime Only" },
         { RE::ACTOR_MORALITY::kNoCrime, "No Crime" } };
 
-    inline static std::map<RE::ACTOR_ASSISTANCE, std::string_view> _assistanceStringMap = {
+    inline static std::map<RE::ACTOR_ASSISTANCE, std::string_view> assistance_string_map_ = {
         { RE::ACTOR_ASSISTANCE::kHelpsNobody, "Helps Nobody" },
         { RE::ACTOR_ASSISTANCE::kHelpsAllies, "Helps Allies" },
         { RE::ACTOR_ASSISTANCE::kHelpsFriends, "Helps Friends" }
     };
 
-    inline static std::map<RE::ACTOR_CONFIDENCE, std::string_view> _confidenceStringMap = {
+    inline static std::map<RE::ACTOR_CONFIDENCE, std::string_view> confidence_string_map_ = {
         { RE::ACTOR_CONFIDENCE::kCowardly, "Cowardly" },
         { RE::ACTOR_CONFIDENCE::kCautious, "Cautious" },
         { RE::ACTOR_CONFIDENCE::kAverage, "Average" },
@@ -116,7 +120,7 @@ private:
         { RE::ACTOR_CONFIDENCE::kFoolhardy, "Foolhardy" }
     };
 
-    inline static std::map<RE::ACTOR_AGGRESSION, std::string_view> _aggressionStringMap = {
+    inline static std::map<RE::ACTOR_AGGRESSION, std::string_view> aggression_string_map_ = {
         { RE::ACTOR_AGGRESSION::kCalmed, "Calmed" },
         { RE::ACTOR_AGGRESSION::kUnaggressive, "Unaggressive" },
         { RE::ACTOR_AGGRESSION::kAggressive, "Aggressive" },
@@ -124,7 +128,7 @@ private:
         { RE::ACTOR_AGGRESSION::kFrenzied, "Frenzied" }
     };
 
-    inline static std::map<RE::ACTOR_MOOD, std::string_view> _moodStringMap = {
+    inline static std::map<RE::ACTOR_MOOD, std::string_view> mood_string_map_ = {
         { RE::ACTOR_MOOD::kNeutral, "Neutral" },
         { RE::ACTOR_MOOD::kAngry, "Angry" },
         { RE::ACTOR_MOOD::kFear, "Fear" },
@@ -135,54 +139,56 @@ private:
         { RE::ACTOR_MOOD::kDisgusted, "Disgusted" },
     };
 
-    inline static std::vector<RE::FormID> _factionFormList{
-        { 0x000DBF9A },  //imperial legion
-        { 0x00029DA9 },  //thiefs guild
-        { 0x00028713 },  //tribe orc
-        { 0x0002584B },  //pentius
-        { 0x0003D6C5 },  //again
-        { 0x0001F259 },  //college
-        { 0x00028849 },  //stormcloaks
-        { 0x000266C8 },  //gray
-        { 0x00039F26 },  //thalmor
-        { 0x0001BDB3 },  //Db
-        { 0x00048362 },  //companions
-        { 0x00072834 },  //blades
-        { 0x000B3292 },  //vigilant
-        { 0x04031786 },  //skaal
-        { 0x02003376 },  //vampire, does not have a faction name
-        { 0x02003375 },  //dawnguard, does not have a faction name
+    inline static std::vector<RE::FormID> faction_form_list_{
+        0x000DBF9A, //imperial legion
+        0x00029DA9, //thiefs guild
+        0x00028713, //tribe orc
+        0x0002584B, //pentius
+        0x0003D6C5, //again
+        0x0001F259, //college
+        0x00028849, //stormcloaks
+        0x000266C8, //gray
+        0x00039F26, //thalmor
+        0x0001BDB3, //Db
+        0x00048362, //companions
+        0x00072834, //blades
+        0x000B3292, //vigilant
+        0x04031786, //skaal
+        0x02003376, //vampire, does not have a faction name
+        0x02003375, //dawnguard, does not have a faction name
     };
 
-    enum class RelationshipRanks {
-        Archnemesis = -4,
-        Enemy = -3,
-        Foe = -2,
-        Rival = -1,
-        Acquaintance = 0,
-        Friend = 1,
-        Confidant = 2,
-        Ally = 3,
-        Lover = 4
+    enum class relationship_ranks {
+        archnemesis = -4,
+        enemy = -3,
+        foe = -2,
+        rival = -1,
+        acquaintance = 0,
+        friend_relation = 1,
+        confidant = 2,
+        ally = 3,
+        lover = 4
     };
 
-    static RelationshipRanks
-        GetRelationshipRank(uint32_t a_arg1, uint32_t a_arg2, RE::Actor* a_source, RE::Actor* a_target) {
-        using func_t = decltype(&GetRelationshipRank);
-        REL::Relocation<func_t> func{ REL::ID(53898) };
-        return static_cast<RelationshipRanks>(func(a_arg1, a_arg2, a_source, a_target));
+    static relationship_ranks get_relationship_rank(uint32_t a_arg1,
+        uint32_t a_arg2,
+        RE::Actor* a_source,
+        RE::Actor* a_target) {
+        using func_t = decltype(&get_relationship_rank);
+        const REL::Relocation<func_t> func{ REL::ID(53898) };
+        return func(a_arg1, a_arg2, a_source, a_target);
     }
 
-    inline static std::map<RelationshipRanks, std::string_view> _relationStringMap = {
-        { RelationshipRanks::Archnemesis, "Archnemesis" },
-        { RelationshipRanks::Enemy, "Enemy" },
-        { RelationshipRanks::Foe, "Foe" },
-        { RelationshipRanks::Rival, "Rival" },
-        { RelationshipRanks::Acquaintance, "Acquaintance" },
-        { RelationshipRanks::Friend, "Friend" },
-        { RelationshipRanks::Confidant, "Confidant" },
-        { RelationshipRanks::Ally, "Ally" },
-        { RelationshipRanks::Lover, "Lover" },
+    inline static std::map<relationship_ranks, std::string_view> relation_string_map_ = {
+        { relationship_ranks::archnemesis, "Archnemesis" },
+        { relationship_ranks::enemy, "Enemy" },
+        { relationship_ranks::foe, "Foe" },
+        { relationship_ranks::rival, "Rival" },
+        { relationship_ranks::acquaintance, "Acquaintance" },
+        { relationship_ranks::friend_relation, "Friend" },
+        { relationship_ranks::confidant, "Confidant" },
+        { relationship_ranks::ally, "Ally" },
+        { relationship_ranks::lover, "Lover" },
     };
 
     inline static std::map<RE::CLASS_DATA::Skill, std::string_view> _teachingSkillStringMap = {

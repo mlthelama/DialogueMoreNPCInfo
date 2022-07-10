@@ -7,8 +7,8 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg) {
     switch (a_msg->type) {
         case SKSE::MessagingInterface::kDataLoaded:
             logger::info("Data loaded"sv);
-            Hook::InstallHooks();
-            Scaleform::Register();
+            hook::install_hooks();
+            scaleform::Register();
             break;
     }
 }
@@ -36,7 +36,7 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Query(const SKSE::QueryInterface* a
         log->flush_on(spdlog::level::trace);
 #endif
 
-        spdlog::set_default_logger(move(log));
+        set_default_logger(move(log));
         spdlog::set_pattern("[%H:%M:%S.%f] %s(%#) [%^%l%$] %v"s);
 
         logger::info(FMT_STRING("{} v{}"), Version::PROJECT, Version::NAME);
@@ -67,21 +67,21 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
     try {
         logger::info("{} loading"sv, Version::PROJECT.data());
         try {
-            Setting::load();
+            setting::load();
         } catch (const std::exception& e) { logger::warn("failed to load setting {}"sv, e.what()); }
 
-        SKSE::Init(a_skse);
+        Init(a_skse);
 
-        switch (*Setting::logLevel) {
-            case Util::_constLogTrace:
+        switch (*setting::log_level) {
+            case util::const_log_trace:
                 spdlog::set_level(spdlog::level::trace);
                 spdlog::flush_on(spdlog::level::trace);
                 break;
-            case Util::_constLogDebug:
+            case util::const_log_debug:
                 spdlog::set_level(spdlog::level::debug);
                 spdlog::flush_on(spdlog::level::debug);
                 break;
-            case Util::_constLogInfo:
+            case util::const_log_info:
                 spdlog::set_level(spdlog::level::info);
                 spdlog::flush_on(spdlog::level::info);
                 break;

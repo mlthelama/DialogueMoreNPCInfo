@@ -1,40 +1,46 @@
 #pragma once
 
-namespace Handle {
-    class DialogueActorHandle {
+namespace handle {
+    class dialogue_actor_handle {
     public:
-        static DialogueActorHandle* GetSingleton() {
-            static DialogueActorHandle singleton;
+        static dialogue_actor_handle* get_singleton() {
+            static dialogue_actor_handle singleton;
             return std::addressof(singleton);
         }
 
-        void initActor(RE::Actor* a_actor) {
-            if (!this->_data) {
-                this->_data = new DialogActorHandleData();
+        void init_actor(RE::Actor* a_actor) {
+            if (!this->data_) {
+                this->data_ = new dialog_actor_handle_data();
             }
             logger::trace("set target actor {}"sv, a_actor->GetName());
 
-            DialogActorHandleData* data = this->_data;
+            dialog_actor_handle_data* data = this->data_;
             data->actor = a_actor;
         }
 
-        RE::Actor* getActor() {
-            DialogActorHandleData* data = this->_data;
-            if (data && data->actor) {
+        [[nodiscard]] RE::Actor* get_actor() const {
+            if (const dialog_actor_handle_data* data = this->data_; data && data->actor) {
                 return data->actor;
             }
             return nullptr;
         }
 
-    private:
-        DialogueActorHandle(){};
-        ~DialogueActorHandle(){};
-        DialogueActorHandle(const DialogueActorHandle&) = delete;
-        DialogueActorHandle& operator=(const DialogueActorHandle&) = delete;
+        dialogue_actor_handle(const dialogue_actor_handle&) = delete;
+        dialogue_actor_handle(dialogue_actor_handle&&) = delete;
 
-        struct DialogActorHandleData {
+        dialogue_actor_handle& operator=(const dialogue_actor_handle&) = delete;
+        dialogue_actor_handle& operator=(dialogue_actor_handle&&) = delete;
+
+    private:
+        dialogue_actor_handle()
+            : data_(nullptr) {}
+
+        ~dialogue_actor_handle() = default;
+
+        struct dialog_actor_handle_data {
             RE::Actor* actor = nullptr;
         };
-        DialogActorHandleData* _data;
+
+        dialog_actor_handle_data* data_;
     };
 }
