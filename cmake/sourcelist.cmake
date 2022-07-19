@@ -4,6 +4,8 @@ set(sources ${sources}
 	src/CLIK/MovieClip.h
 	src/CLIK/Object.h
 	src/CLIK/TextField.h
+	src/CLIK/keyvalue.h
+	src/CLIK/pictureback.h
 	src/PCH.h
 	src/data/actordata.h
 	src/handle/dialogueactorhandle.h
@@ -14,5 +16,7 @@ set(sources ${sources}
 	src/scaleform/scaleform.h
 	src/setting/setting.h
 	src/util/constant.h
+	src/util/menukeys.h
+	src/util/offset.h
 	src/util/util.h
 )

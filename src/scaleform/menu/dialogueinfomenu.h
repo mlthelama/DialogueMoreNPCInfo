@@ -1,6 +1,8 @@
 #pragma once
 #include "CLIK/Array.h"
+#include "CLIK/keyvalue.h"
 #include "CLIK/MovieClip.h"
+#include "CLIK/PictureBack.h"
 #include "CLIK/TextField.h"
 #include "data/actordata.h"
 #include "handle/dialogueactorhandle.h"
@@ -155,33 +157,20 @@ namespace scaleform {
             for (std::array objects{
                      element_t{ std::ref(root_obj_), "_root.rootObj"sv },
                      element_t{ std::ref(race_), "_root.rootObj.race"sv },
-                     element_t{ std::ref(name_), "_root.rootObj.name"sv },
-                     element_t{ std::ref(gender_), "_root.rootObj.gender"sv },
-                     element_t{ std::ref(class_name_), "_root.rootObj.className"sv },
-                     element_t{ std::ref(level_), "_root.rootObj.level"sv },
-                     element_t{ std::ref(faction_), "_root.rootObj.faction"sv },
-                     element_t{ std::ref(trainer_), "_root.rootObj.trainer"sv },
-                     element_t{ std::ref(vendor_), "_root.rootObj.vendor"sv },
-                     element_t{ std::ref(morality_), "_root.rootObj.morality"sv },
-                     element_t{ std::ref(assistence_), "_root.rootObj.assistance"sv },
-                     element_t{ std::ref(confidence_), "_root.rootObj.confidence"sv },
-                     element_t{ std::ref(aggression_), "_root.rootObj.aggression"sv },
-                     element_t{ std::ref(mood_), "_root.rootObj.mood"sv },
-                     element_t{ std::ref(relation_), "_root.rootObj.relation"sv },
-                     element_t{ std::ref(name_value_), "_root.rootObj.nameValue"sv },
-                     element_t{ std::ref(gender_value_), "_root.rootObj.genderValue"sv },
-                     element_t{ std::ref(class_name_value_), "_root.rootObj.classNameValue"sv },
-                     element_t{ std::ref(level_value_), "_root.rootObj.levelValue"sv },
-                     element_t{ std::ref(faction_value_), "_root.rootObj.factionValue"sv },
-                     element_t{ std::ref(trainer_value_), "_root.rootObj.trainerValue"sv },
-                     element_t{ std::ref(vendor_value_), "_root.rootObj.vendorValue"sv },
-                     element_t{ std::ref(morality_value_), "_root.rootObj.moralityValue"sv },
-                     element_t{ std::ref(assistence_value_), "_root.rootObj.assistanceValue"sv },
-                     element_t{ std::ref(confidence_value_), "_root.rootObj.confidenceValue"sv },
-                     element_t{ std::ref(aggression_value_), "_root.rootObj.aggressionValue"sv },
-                     element_t{ std::ref(mood_value_), "_root.rootObj.moodValue"sv },
-                     element_t{ std::ref(relation_value_), "_root.rootObj.relationValue"sv },
-                     element_t{ std::ref(default_portrait_), "_root.rootObj.defaultIcon"sv }
+                     element_t{ std::ref(picture_back_), "_root.rootObj.picture"sv },
+                     element_t{ std::ref(key_value_name_), "_root.rootObj.keyValueName"sv },
+                     element_t{ std::ref(key_value_gender_), "_root.rootObj.keyValueGender"sv },
+                     element_t{ std::ref(key_value_class_), "_root.rootObj.keyValueClass"sv },
+                     element_t{ std::ref(key_value_level_), "_root.rootObj.keyValueLevel"sv },
+                     element_t{ std::ref(key_value_faction_), "_root.rootObj.keyValueFaction"sv },
+                     element_t{ std::ref(key_value_trainer_), "_root.rootObj.keyValueTrainer"sv },
+                     element_t{ std::ref(key_value_vendor_), "_root.rootObj.keyValueVendor"sv },
+                     element_t{ std::ref(key_value_morality_), "_root.rootObj.keyValueMorality"sv },
+                     element_t{ std::ref(key_value_assistance_), "_root.rootObj.keyValueAssistance"sv },
+                     element_t{ std::ref(key_value_confidence_), "_root.rootObj.keyValueConfidence"sv },
+                     element_t{ std::ref(key_value_aggression_), "_root.rootObj.keyValueAggression"sv },
+                     element_t{ std::ref(key_value_mood_), "_root.rootObj.keyValueMood"sv },
+                     element_t{ std::ref(key_value_relation_), "_root.rootObj.keyValueRelation"sv },
                  }; const auto& [object, path] : objects) {
                 auto& instance = object.get().GetInstance();
                 [[maybe_unused]] const auto success = view_->GetVariable(std::addressof(instance), path.data());
@@ -191,7 +180,6 @@ namespace scaleform {
 
             root_obj_.Visible(false);
 
-            update_title_fields();
             fill_fields();
 
             view_->SetVisible(true);
@@ -201,34 +189,25 @@ namespace scaleform {
         }
 
         static void update_text(CLIK::TextField a_field, const std::string_view a_string) {
-            a_field.AutoSize(CLIK::Object{ "left" });
+            a_field.AutoSize(CLIK::Object{ "center" });
             a_field.HTMLText(a_string);
             a_field.Visible(true);
         }
 
-        [[nodiscard]] RE::GFxValue build_gfx_value(const std::string& a_val) const {
+        [[nodiscard]] RE::GFxValue build_gfx_value_icon(const std::string& a_key) const {
             RE::GFxValue value;
             view_->CreateObject(std::addressof(value));
-            value.SetMember("displayName", { static_cast<std::string_view>(a_val) });
+            value.SetMember("iconKey", { static_cast<std::string_view>(a_key) });
             return value;
         }
 
-        void update_title_fields() const {
-            //TODO add translation/config for the strings
-            update_text(name_, "Name");
-            update_text(gender_, "Gender");
-            update_text(class_name_, "Class");
-            update_text(level_, "Level");
-            update_text(faction_, "Faction");
-            update_text(trainer_, "Trainer");
-            update_text(vendor_, "Vendor");
-
-            update_text(morality_, "Morality");
-            update_text(assistence_, "Assistance");
-            update_text(confidence_, "Confidence");
-            update_text(aggression_, "Aggression");
-            update_text(mood_, "Mood");
-            update_text(relation_, "Relationship");
+        [[nodiscard]] RE::GFxValue build_gfx_value_pair(const std::string_view& a_key,
+            const std::string_view& a_value) const {
+            RE::GFxValue value;
+            view_->CreateObject(std::addressof(value));
+            value.SetMember("keyText", { a_key });
+            value.SetMember("valueText", { a_value });
+            return value;
         }
 
         void fill_fields() {
@@ -240,40 +219,60 @@ namespace scaleform {
                     actor->GetName(),
                     util::string_util::int_to_hex(actor->formID),
                     util::string_util::int_to_hex(actor_base->formID));
-                update_text(race_, actor->GetRace()->GetName());
-                update_text(name_value_, actor->GetName());
-                //icon for gender
-                if (actor->GetName() == "Alvor"sv) {
-                    default_portrait_.Visible(true);
-                }
 
-                update_text(gender_value_, actor_data::get_gender(actor_base));
-                update_text(class_name_value_, actor_base->npcClass->GetName());
-                update_text(level_value_, std::to_string(actor->GetLevel()));
-                update_text(faction_value_, actor_data::get_faction(actor));
+                const auto gender = actor_data::get_gender(actor_base);
+                const auto race = actor->GetRace()->GetName();
+
+                update_text(race_, race); //center value
+                //icon for gender
+                key_value_name_.data_provider(CLIK::Object{ build_gfx_value_pair(menu_keys::name, actor->GetName()) });
+
+                auto icon_key = util::avatar_util::get_avatar_key(race, static_cast<std::string>(gender));
+                logger::trace("icon key is: {}"sv, icon_key);
+
+                picture_back_.data_provider(CLIK::Object{ build_gfx_value_icon(icon_key) });
+
+                key_value_gender_.data_provider(CLIK::Object{ build_gfx_value_pair(menu_keys::gender, gender) });
+                key_value_class_.data_provider(
+                    CLIK::Object{ build_gfx_value_pair(menu_keys::class_name, actor_base->npcClass->GetName()) });
+                key_value_level_.data_provider(
+                    CLIK::Object{ build_gfx_value_pair(menu_keys::level, std::to_string(actor->GetLevel())) });
+                key_value_faction_.data_provider(
+                    CLIK::Object{ build_gfx_value_pair(menu_keys::faction, actor_data::get_faction(actor)) });
 
                 auto teaches = actor_data::get_is_trainer(actor_base);
                 if (auto max_training = actor_data::get_max_trainings_level(actor_base);
                     !teaches.empty() && max_training > 0) {
-                    update_text(trainer_value_, fmt::format(FMT_STRING("{}, Max {}"), teaches, max_training));
+                    key_value_trainer_.data_provider(CLIK::Object{
+                        build_gfx_value_pair(menu_keys::trainer,
+                            fmt::format(FMT_STRING("{}, Max {}"), teaches, max_training)) });
                 } else {
-                    update_text(trainer_value_, "-");
+                    key_value_trainer_.data_provider(CLIK::Object{ build_gfx_value_pair(menu_keys::trainer, "-") });
                 }
 
-                update_text(vendor_value_, actor_data::is_vendor(actor) ? "Yes" : "No");
+                key_value_vendor_.data_provider(CLIK::Object{
+                    build_gfx_value_pair(menu_keys::vendor,
+                        actor_data::is_vendor(actor) ? menu_keys::yes : menu_keys::no) });
 
-                update_text(morality_value_, actor_data::get_morality(actor_base));
-                update_text(assistence_value_, actor_data::get_assistance(actor_base));
-                update_text(confidence_value_, actor_data::get_confidence(actor_base));
-                update_text(aggression_value_, actor_data::get_aggression(actor_base));
-                update_text(mood_value_, actor_data::get_mood(actor_base));
-                update_text(relation_value_, actor_data::get_relationship_rank_string(actor));
+                key_value_morality_.data_provider(
+                    CLIK::Object{ build_gfx_value_pair(menu_keys::morality, actor_data::get_morality(actor_base)) });
+                key_value_assistance_.data_provider(
+                    CLIK::Object{
+                        build_gfx_value_pair(menu_keys::assistence, actor_data::get_assistance(actor_base)) });
+                key_value_confidence_.data_provider(
+                    CLIK::Object{
+                        build_gfx_value_pair(menu_keys::confidence, actor_data::get_confidence(actor_base)) });
+                key_value_aggression_.data_provider(
+                    CLIK::Object{
+                        build_gfx_value_pair(menu_keys::aggression, actor_data::get_aggression(actor_base)) });
+                key_value_mood_.data_provider(
+                    CLIK::Object{ build_gfx_value_pair(menu_keys::mood, actor_data::get_mood(actor_base)) });
+                key_value_relation_.data_provider(CLIK::Object{
+                    build_gfx_value_pair(menu_keys::relation, actor_data::get_relationship_rank_string(actor)) });
             }
 
             logger::trace("done filling the fields with data"sv);
         }
-
-        void handle_portrait() { default_portrait_.Visible(false); }
 
         static void on_close() { }
 
@@ -291,36 +290,22 @@ namespace scaleform {
 
         CLIK::TextField race_;
 
-        CLIK::TextField name_;
-        CLIK::TextField gender_;
-        CLIK::TextField class_name_;
-        CLIK::TextField level_;
-        CLIK::TextField faction_;
-        CLIK::TextField trainer_;
-        CLIK::TextField vendor_;
+        CLIK::picture_back picture_back_;
 
-        CLIK::TextField morality_;
-        CLIK::TextField assistence_;
-        CLIK::TextField confidence_;
-        CLIK::TextField aggression_;
-        CLIK::TextField mood_;
-        CLIK::TextField relation_;
+        CLIK::key_value key_value_name_;
+        CLIK::key_value key_value_gender_;
+        CLIK::key_value key_value_class_;
+        CLIK::key_value key_value_level_;
+        CLIK::key_value key_value_faction_;
+        CLIK::key_value key_value_trainer_;
+        CLIK::key_value key_value_vendor_;
 
-        CLIK::TextField name_value_;
-        CLIK::TextField gender_value_;
-        CLIK::TextField class_name_value_;
-        CLIK::TextField level_value_;
-        CLIK::TextField faction_value_;
-        CLIK::TextField trainer_value_;
-        CLIK::TextField vendor_value_;
+        CLIK::key_value key_value_morality_;
+        CLIK::key_value key_value_assistance_;
+        CLIK::key_value key_value_confidence_;
+        CLIK::key_value key_value_aggression_;
+        CLIK::key_value key_value_mood_;
+        CLIK::key_value key_value_relation_;
 
-        CLIK::TextField morality_value_;
-        CLIK::TextField assistence_value_;
-        CLIK::TextField confidence_value_;
-        CLIK::TextField aggression_value_;
-        CLIK::TextField mood_value_;
-        CLIK::TextField relation_value_;
-
-        CLIK::MovieClip default_portrait_;
     };
 }

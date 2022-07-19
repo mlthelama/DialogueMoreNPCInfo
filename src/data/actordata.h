@@ -1,5 +1,8 @@
 #pragma once
+#include "util/menukeys.h"
 #include "util/util.h"
+
+#include "util/offset.h"
 
 class actor_data final {
 public:
@@ -59,7 +62,7 @@ public:
     static std::string_view get_is_trainer(RE::TESNPC*& a_tesnpc) {
         const auto teaches_skill = a_tesnpc->npcClass->data.teaches;
         if (teaches_skill) {
-            return get_value_from_map(_teachingSkillStringMap, teaches_skill.get());
+            return get_value_from_map(teaching_skill_string_map_, teaches_skill.get());
         }
         return "";
     }
@@ -97,46 +100,46 @@ private:
     }
 
     //TODO add translation/config for the strings
-    inline static std::map<RE::SEX, std::string_view> gender_string_map_ = { { RE::SEX::kMale, "Male" },
-                                                                             { RE::SEX::kFemale, "Female" } };
+    inline static std::map<RE::SEX, std::string_view> gender_string_map_ = { { RE::SEX::kMale, menu_keys::male },
+                                                                             { RE::SEX::kFemale, menu_keys::female } };
 
     inline static std::map<RE::ACTOR_MORALITY, std::string_view> morality_string_map_ = {
-        { RE::ACTOR_MORALITY::kAnyCrime, "Any Crime" },
-        { RE::ACTOR_MORALITY::kViolenceAgainstEnemy, "Violence Against Enemies" },
-        { RE::ACTOR_MORALITY::kPropertyCrimeOnly, "Property Crime Only" },
-        { RE::ACTOR_MORALITY::kNoCrime, "No Crime" } };
+        { RE::ACTOR_MORALITY::kAnyCrime, menu_keys::any_crime },
+        { RE::ACTOR_MORALITY::kViolenceAgainstEnemy, menu_keys::violence_against_enemy },
+        { RE::ACTOR_MORALITY::kPropertyCrimeOnly, menu_keys::property_crime_only },
+        { RE::ACTOR_MORALITY::kNoCrime, menu_keys::no_crime } };
 
     inline static std::map<RE::ACTOR_ASSISTANCE, std::string_view> assistance_string_map_ = {
-        { RE::ACTOR_ASSISTANCE::kHelpsNobody, "Helps Nobody" },
-        { RE::ACTOR_ASSISTANCE::kHelpsAllies, "Helps Allies" },
-        { RE::ACTOR_ASSISTANCE::kHelpsFriends, "Helps Friends" }
+        { RE::ACTOR_ASSISTANCE::kHelpsNobody, menu_keys::helps_nobody },
+        { RE::ACTOR_ASSISTANCE::kHelpsAllies, menu_keys::helps_allies },
+        { RE::ACTOR_ASSISTANCE::kHelpsFriends, menu_keys::helps_friends }
     };
 
     inline static std::map<RE::ACTOR_CONFIDENCE, std::string_view> confidence_string_map_ = {
-        { RE::ACTOR_CONFIDENCE::kCowardly, "Cowardly" },
-        { RE::ACTOR_CONFIDENCE::kCautious, "Cautious" },
-        { RE::ACTOR_CONFIDENCE::kAverage, "Average" },
-        { RE::ACTOR_CONFIDENCE::kBrave, "Brave" },
-        { RE::ACTOR_CONFIDENCE::kFoolhardy, "Foolhardy" }
+        { RE::ACTOR_CONFIDENCE::kCowardly, menu_keys::cowardly },
+        { RE::ACTOR_CONFIDENCE::kCautious, menu_keys::cautious },
+        { RE::ACTOR_CONFIDENCE::kAverage, menu_keys::average },
+        { RE::ACTOR_CONFIDENCE::kBrave, menu_keys::brave },
+        { RE::ACTOR_CONFIDENCE::kFoolhardy, menu_keys::foolhardy }
     };
 
     inline static std::map<RE::ACTOR_AGGRESSION, std::string_view> aggression_string_map_ = {
-        { RE::ACTOR_AGGRESSION::kCalmed, "Calmed" },
-        { RE::ACTOR_AGGRESSION::kUnaggressive, "Unaggressive" },
-        { RE::ACTOR_AGGRESSION::kAggressive, "Aggressive" },
-        { RE::ACTOR_AGGRESSION::kVeryAggressive, "Very Aggressive" },
-        { RE::ACTOR_AGGRESSION::kFrenzied, "Frenzied" }
+        { RE::ACTOR_AGGRESSION::kCalmed, menu_keys::calmed },
+        { RE::ACTOR_AGGRESSION::kUnaggressive, menu_keys::unaggressive },
+        { RE::ACTOR_AGGRESSION::kAggressive, menu_keys::aggressive },
+        { RE::ACTOR_AGGRESSION::kVeryAggressive, menu_keys::very_aggressive },
+        { RE::ACTOR_AGGRESSION::kFrenzied, menu_keys::frenzied }
     };
 
     inline static std::map<RE::ACTOR_MOOD, std::string_view> mood_string_map_ = {
-        { RE::ACTOR_MOOD::kNeutral, "Neutral" },
-        { RE::ACTOR_MOOD::kAngry, "Angry" },
-        { RE::ACTOR_MOOD::kFear, "Fear" },
-        { RE::ACTOR_MOOD::kHappy, "Happy" },
-        { RE::ACTOR_MOOD::kSad, "Sad" },
-        { RE::ACTOR_MOOD::kSurprised, "Surprised" },
-        { RE::ACTOR_MOOD::kPuzzled, "Puzzled" },
-        { RE::ACTOR_MOOD::kDisgusted, "Disgusted" },
+        { RE::ACTOR_MOOD::kNeutral, menu_keys::neutral },
+        { RE::ACTOR_MOOD::kAngry, menu_keys::angry },
+        { RE::ACTOR_MOOD::kFear, menu_keys::fear },
+        { RE::ACTOR_MOOD::kHappy, menu_keys::happy },
+        { RE::ACTOR_MOOD::kSad, menu_keys::sad },
+        { RE::ACTOR_MOOD::kSurprised, menu_keys::surprised },
+        { RE::ACTOR_MOOD::kPuzzled, menu_keys::puzzled },
+        { RE::ACTOR_MOOD::kDisgusted, menu_keys::disgusted },
     };
 
     inline static std::vector<RE::FormID> faction_form_list_{
@@ -175,40 +178,40 @@ private:
         RE::Actor* a_source,
         RE::Actor* a_target) {
         using func_t = decltype(&get_relationship_rank);
-        const REL::Relocation<func_t> func{ REL::ID(53898) };
+        const REL::Relocation<func_t> func{ REL::ID(offset::get_relationship_rank) };
         return func(a_arg1, a_arg2, a_source, a_target);
     }
 
     inline static std::map<relationship_ranks, std::string_view> relation_string_map_ = {
-        { relationship_ranks::archnemesis, "Archnemesis" },
-        { relationship_ranks::enemy, "Enemy" },
-        { relationship_ranks::foe, "Foe" },
-        { relationship_ranks::rival, "Rival" },
-        { relationship_ranks::acquaintance, "Acquaintance" },
-        { relationship_ranks::friend_relation, "Friend" },
-        { relationship_ranks::confidant, "Confidant" },
-        { relationship_ranks::ally, "Ally" },
-        { relationship_ranks::lover, "Lover" },
+        { relationship_ranks::archnemesis, menu_keys::archnemesis },
+        { relationship_ranks::enemy, menu_keys::enemy },
+        { relationship_ranks::foe, menu_keys::foe },
+        { relationship_ranks::rival, menu_keys::rival },
+        { relationship_ranks::acquaintance, menu_keys::acquaintance },
+        { relationship_ranks::friend_relation, menu_keys::friend_relation },
+        { relationship_ranks::confidant, menu_keys::confidant },
+        { relationship_ranks::ally, menu_keys::ally },
+        { relationship_ranks::lover, menu_keys::lover },
     };
 
-    inline static std::map<RE::CLASS_DATA::Skill, std::string_view> _teachingSkillStringMap = {
-        { RE::CLASS_DATA::Skill::kOneHanded, "OneHanded" },
-        { RE::CLASS_DATA::Skill::kTwoHanded, "TwoHanded" },
-        { RE::CLASS_DATA::Skill::kArchery, "Archery" },
-        { RE::CLASS_DATA::Skill::kBlock, "Block" },
-        { RE::CLASS_DATA::Skill::kSmithing, "Smithing" },
-        { RE::CLASS_DATA::Skill::kHeavyArmor, "HeavyArmor" },
-        { RE::CLASS_DATA::Skill::kLightArmor, "LightArmor" },
-        { RE::CLASS_DATA::Skill::kPickpocket, "Pickpocket" },
-        { RE::CLASS_DATA::Skill::kLockpicking, "Lockpicking" },
-        { RE::CLASS_DATA::Skill::kSneak, "Sneak" },
-        { RE::CLASS_DATA::Skill::kAlchemy, "Alchemy" },
-        { RE::CLASS_DATA::Skill::kSpeech, "Speech" },
-        { RE::CLASS_DATA::Skill::kAlteration, "Alteration" },
-        { RE::CLASS_DATA::Skill::kConjuration, "Conjuration" },
-        { RE::CLASS_DATA::Skill::kDestruction, "Destruction" },
-        { RE::CLASS_DATA::Skill::kIllusion, "Illusion" },
-        { RE::CLASS_DATA::Skill::kRestoration, "Restoration" },
-        { RE::CLASS_DATA::Skill::kEnchanting, "Enchanting" }
+    inline static std::map<RE::CLASS_DATA::Skill, std::string_view> teaching_skill_string_map_ = {
+        { RE::CLASS_DATA::Skill::kOneHanded, menu_keys::one_handed },
+        { RE::CLASS_DATA::Skill::kTwoHanded, menu_keys::two_handed },
+        { RE::CLASS_DATA::Skill::kArchery, menu_keys::archery },
+        { RE::CLASS_DATA::Skill::kBlock, menu_keys::block },
+        { RE::CLASS_DATA::Skill::kSmithing, menu_keys::smithing },
+        { RE::CLASS_DATA::Skill::kHeavyArmor, menu_keys::heavy_armor },
+        { RE::CLASS_DATA::Skill::kLightArmor, menu_keys::light_armor },
+        { RE::CLASS_DATA::Skill::kPickpocket, menu_keys::pickpocket },
+        { RE::CLASS_DATA::Skill::kLockpicking, menu_keys::lockpicking },
+        { RE::CLASS_DATA::Skill::kSneak, menu_keys::sneak },
+        { RE::CLASS_DATA::Skill::kAlchemy, menu_keys::alchemy },
+        { RE::CLASS_DATA::Skill::kSpeech, menu_keys::speech },
+        { RE::CLASS_DATA::Skill::kAlteration, menu_keys::alteration },
+        { RE::CLASS_DATA::Skill::kConjuration, menu_keys::conjuration },
+        { RE::CLASS_DATA::Skill::kDestruction, menu_keys::destruction },
+        { RE::CLASS_DATA::Skill::kIllusion, menu_keys::illusion },
+        { RE::CLASS_DATA::Skill::kRestoration, menu_keys::restoration },
+        { RE::CLASS_DATA::Skill::kEnchanting, menu_keys::enchanting }
     };
 };
