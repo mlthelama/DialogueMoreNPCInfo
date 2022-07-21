@@ -23,6 +23,8 @@ struct setting {
     //static inline const char* _constUndefined = "<undef>";
 
     static inline int_setting log_level{ "General"s, "logLevel"s, 0 };
-
     static inline int_setting avatar_set{ "General"s, "avatarSet"s, 0 };
+    static inline bool_setting hide_faction{"General"s, "hideFaction"s, true};
+
+    static inline bool_setting hand_to_hand{ "Mods"s, "handToHand"s, true };
 };

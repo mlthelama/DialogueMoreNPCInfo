@@ -28,7 +28,7 @@ namespace util {
 
         static std::string_view get_mer_name(std::string_view a_name) {
             if (!mer_name_map_.contains(a_name)) {
-                logger::warn("can not find name {}"sv, a_name);
+                logger::debug("can not find name {}. return the same value."sv, a_name);
                 return a_name;
             }
             return mer_name_map_.find(a_name)->second;

@@ -39,6 +39,15 @@ namespace hook {
         }
 
         void advance_movie_hook(float a_interval, std::uint32_t a_current_time) {
+            if (scaleform::dialogue_info_menu::is_menu_open()) {
+                const auto task = SKSE::GetTaskInterface();
+                task->AddUITask([] {
+                    if (const auto menu = RE::UI::GetSingleton()->GetMenu<scaleform::dialogue_info_menu>(
+                        scaleform::dialogue_info_menu::menu_name)) {
+                        menu->refresh_items();
+                    }
+                });
+            }
             return advance(this, a_interval, a_current_time);
         }
     };

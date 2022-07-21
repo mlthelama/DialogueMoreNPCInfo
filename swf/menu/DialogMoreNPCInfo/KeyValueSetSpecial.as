@@ -2,21 +2,23 @@ import gfx.core.UIComponent;
 import gfx.events.EventTypes;
 import gfx.io.GameDelegate;
 
-class KeyValueSet extends UIComponent {
+class KeyValueSetSpecial extends UIComponent {
 
 	public var key: TextField;
 	public var value: TextField;
+	public var valueMax: TextField;
 
 	/* PRIVATE VARIABLES */
 	private var _dataProvider: Object;
 
 	private var _valueText: String;
 	private var _keyText: String;
+	private var _valueMaxText: String;
 	
 	/* INITIALIZATION */
-	public function KeyValueSet() {
+	public function KeyValueSetSpecial() {
 		super();
-        //log("Running KeyValueSet ...");
+        //log("Running KeyValueSetSpecial ...");
 	}
 	
 	public function onLoad(): Void {
@@ -42,18 +44,23 @@ class KeyValueSet extends UIComponent {
 
 		var keyText: String = _dataProvider.keyText != null ? _dataProvider.keyText : "";
 		var valueText: String = _dataProvider.valueText != null ? _dataProvider.valueText : "";
+		var valueMaxText: String = _dataProvider.valueMaxText != null ? _dataProvider.valueMaxText : "";
 
 		if (valueText == _valueText) {
 			return;
 		}
 
-		log("key value: " + keyText + ", value value: " + valueText);
+		log("key value: " + keyText + ", value value: " + valueText + ", max value: " + valueMaxText);
 
 		if (keyText == null) {
 			return;
 		}
 
 		if (valueText == null) {
+			return;
+		}
+		
+		if (valueMaxText == null) {
 			return;
 		}
 
@@ -69,6 +76,13 @@ class KeyValueSet extends UIComponent {
 			value.text = valueText;
 			value._visible = true;
 			_valueText = valueText;
+		}
+		
+		if (_valueMaxText != valueMaxText) {
+			valueMax.autoSize = "left";
+			valueMax.text = valueMaxText;
+			valueMax._visible = true;
+			_valueMaxText = valueMaxText;
 		}
 
 		log("set all data.");

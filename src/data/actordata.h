@@ -32,6 +32,9 @@ public:
 
     static std::string_view get_faction(RE::Actor*& a_actor) {
         auto faction = "-";
+        if (*setting::hide_faction) {
+            return faction;
+        }
         a_actor->VisitFactions([&](const RE::TESFaction* a_faction, int8_t a_rank) {
             if (a_faction && a_rank > -1) {
                 const auto name(a_faction->GetName());
@@ -62,7 +65,19 @@ public:
     static std::string_view get_is_trainer(RE::TESNPC*& a_tesnpc) {
         const auto teaches_skill = a_tesnpc->npcClass->data.teaches;
         if (teaches_skill) {
-            return get_value_from_map(teaching_skill_string_map_, teaches_skill.get());
+            // handle hand to hand support
+            auto value = get_value_from_map(teaching_skill_string_map_, teaches_skill.get());
+            if (*setting::hand_to_hand) {
+                switch (teaches_skill.get()) {
+                    case RE::CLASS_DATA::Skill::kLockpicking:
+                        value = menu_keys::hand_to_hand;
+                        break;
+                    case RE::CLASS_DATA::Skill::kPickpocket:
+                        value = menu_keys::security;
+                        break;
+                }
+            }
+            return value;
         }
         return "";
     }

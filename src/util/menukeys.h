@@ -82,4 +82,7 @@ namespace menu_keys {
 
     constexpr auto yes = "$DMNIYes"sv;
     constexpr auto no = "$DMNINo"sv;
+
+    constexpr auto hand_to_hand = "$DMNIHandToHand"sv;
+    constexpr auto security = "$DMNISecurity"sv;
 }

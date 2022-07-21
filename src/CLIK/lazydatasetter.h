@@ -2,33 +2,33 @@
 #include "Object.h"
 
 namespace CLIK {
-    class key_value : public Object {
+    class lazy_data_setter : public Object {
         using super = Object;
 
     public:
-        key_value() = default;
-        key_value(const key_value&) = default;
-        key_value(key_value&&) = default;
+        lazy_data_setter() = default;
+        lazy_data_setter(const lazy_data_setter&) = default;
+        lazy_data_setter(lazy_data_setter&&) = default;
         using super::super;
 
-        explicit key_value(const super& a_rhs)
+        explicit lazy_data_setter(const super& a_rhs)
             : super(a_rhs) {}
 
-        explicit key_value(super&& a_rhs)
+        explicit lazy_data_setter(super&& a_rhs)
             : super(std::move(a_rhs)) {}
 
-        ~key_value() = default;
+        ~lazy_data_setter() = default;
 
-        key_value& operator=(const key_value&) = default;
-        key_value& operator=(key_value&&) = default;
+        lazy_data_setter& operator=(const lazy_data_setter&) = default;
+        lazy_data_setter& operator=(lazy_data_setter&&) = default;
         using super::operator=;
 
-        key_value& operator=(const super& a_rhs) {
+        lazy_data_setter& operator=(const super& a_rhs) {
             super::operator=(a_rhs);
             return *this;
         }
 
-        key_value& operator=(super&& a_rhs) {
+        lazy_data_setter& operator=(super&& a_rhs) {
             super::operator=(std::move(a_rhs));
             return *this;
         }

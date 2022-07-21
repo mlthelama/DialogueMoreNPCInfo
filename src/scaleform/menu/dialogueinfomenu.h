@@ -1,7 +1,6 @@
 #pragma once
-#include "CLIK/keyvalue.h"
 #include "CLIK/MovieClip.h"
-#include "CLIK/PictureBack.h"
+#include "CLIK/lazydatasetter.h"
 #include "CLIK/TextField.h"
 #include "data/actordata.h"
 #include "handle/dialogueactorhandle.h"
@@ -43,7 +42,12 @@ namespace scaleform {
 
         void refresh_items() {
             if (is_menu_open()) {
-                fill_fields();
+                //fill_fields();
+                if (const auto actor = handle::dialogue_actor_handle::get_singleton()->get_actor()) {
+                    set_relationship_data(actor);
+                    const auto actor_base = actor->GetActorBase();
+                    set_mood_data(actor_base);
+                }
             }
         }
 
@@ -209,6 +213,17 @@ namespace scaleform {
             return value;
         }
 
+        [[nodiscard]] RE::GFxValue build_gfx_value_pair_with_max(const std::string_view& a_key,
+            const std::string_view& a_value,
+            const std::string_view& a_max) const {
+            RE::GFxValue value;
+            view_->CreateObject(std::addressof(value));
+            value.SetMember("keyText", { a_key });
+            value.SetMember("valueText", { a_value });
+            value.SetMember("valueMaxText", { a_max });
+            return value;
+        }
+
         void fill_fields() {
             logger::trace("going to fill the fields with data"sv);
 
@@ -240,12 +255,12 @@ namespace scaleform {
                 key_value_faction_.data_provider(
                     CLIK::Object{ build_gfx_value_pair(menu_keys::faction, actor_data::get_faction(actor)) });
 
-                auto teaches = actor_data::get_is_trainer(actor_base);
-                if (auto max_training = actor_data::get_max_trainings_level(actor_base);
+                const auto teaches = actor_data::get_is_trainer(actor_base);
+                if (const auto max_training = actor_data::get_max_trainings_level(actor_base);
                     !teaches.empty() && max_training > 0) {
+                    const auto max_string = fmt::format(FMT_STRING("({})"), max_training);
                     key_value_trainer_.data_provider(CLIK::Object{
-                        build_gfx_value_pair(menu_keys::trainer,
-                            fmt::format(FMT_STRING("{}, Max {}"), teaches, max_training)) });
+                        build_gfx_value_pair_with_max(menu_keys::trainer, teaches, max_string) });
                 } else {
                     key_value_trainer_.data_provider(CLIK::Object{ build_gfx_value_pair(menu_keys::trainer, "-") });
                 }
@@ -265,10 +280,10 @@ namespace scaleform {
                 key_value_aggression_.data_provider(
                     CLIK::Object{
                         build_gfx_value_pair(menu_keys::aggression, actor_data::get_aggression(actor_base)) });
-                key_value_mood_.data_provider(
-                    CLIK::Object{ build_gfx_value_pair(menu_keys::mood, actor_data::get_mood(actor_base)) });
-                key_value_relation_.data_provider(CLIK::Object{
-                    build_gfx_value_pair(menu_keys::relation, actor_data::get_relationship_rank_string(actor)) });
+
+                set_mood_data(actor_base);
+
+                set_relationship_data(actor);
             }
 
             logger::trace("done filling the fields with data"sv);
@@ -283,6 +298,17 @@ namespace scaleform {
             logger::debug("{}: {}"sv, menu_name, a_params[0].GetString());
         }
 
+        void set_relationship_data(RE::Actor* a_actor) {
+            key_value_relation_.data_provider(CLIK::Object{
+                build_gfx_value_pair(menu_keys::relation, actor_data::get_relationship_rank_string(a_actor)) });
+        }
+
+        void set_mood_data(RE::TESNPC* a_actor_base) {
+            key_value_mood_.data_provider(
+                CLIK::Object{ build_gfx_value_pair(menu_keys::mood, actor_data::get_mood(a_actor_base)) });
+        }
+
+
         RE::GPtr<RE::GFxMovieView> view_;
         bool is_active_ = false;
 
@@ -290,22 +316,22 @@ namespace scaleform {
 
         CLIK::TextField race_;
 
-        CLIK::picture_back picture_back_;
+        CLIK::lazy_data_setter picture_back_;
 
-        CLIK::key_value key_value_name_;
-        CLIK::key_value key_value_gender_;
-        CLIK::key_value key_value_class_;
-        CLIK::key_value key_value_level_;
-        CLIK::key_value key_value_faction_;
-        CLIK::key_value key_value_trainer_;
-        CLIK::key_value key_value_vendor_;
+        CLIK::lazy_data_setter key_value_name_;
+        CLIK::lazy_data_setter key_value_gender_;
+        CLIK::lazy_data_setter key_value_class_;
+        CLIK::lazy_data_setter key_value_level_;
+        CLIK::lazy_data_setter key_value_faction_;
+        CLIK::lazy_data_setter key_value_trainer_;
+        CLIK::lazy_data_setter key_value_vendor_;
 
-        CLIK::key_value key_value_morality_;
-        CLIK::key_value key_value_assistance_;
-        CLIK::key_value key_value_confidence_;
-        CLIK::key_value key_value_aggression_;
-        CLIK::key_value key_value_mood_;
-        CLIK::key_value key_value_relation_;
+        CLIK::lazy_data_setter key_value_morality_;
+        CLIK::lazy_data_setter key_value_assistance_;
+        CLIK::lazy_data_setter key_value_confidence_;
+        CLIK::lazy_data_setter key_value_aggression_;
+        CLIK::lazy_data_setter key_value_mood_;
+        CLIK::lazy_data_setter key_value_relation_;
 
     };
 }

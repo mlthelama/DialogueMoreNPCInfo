@@ -4,8 +4,7 @@ set(sources ${sources}
 	src/CLIK/MovieClip.h
 	src/CLIK/Object.h
 	src/CLIK/TextField.h
-	src/CLIK/keyvalue.h
-	src/CLIK/pictureback.h
+	src/CLIK/lazydatasetter.h
 	src/PCH.h
 	src/data/actordata.h
 	src/handle/dialogueactorhandle.h
