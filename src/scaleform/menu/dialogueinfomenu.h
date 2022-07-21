@@ -1,5 +1,4 @@
 #pragma once
-#include "CLIK/Array.h"
 #include "CLIK/keyvalue.h"
 #include "CLIK/MovieClip.h"
 #include "CLIK/PictureBack.h"
@@ -237,6 +236,7 @@ namespace scaleform {
                     CLIK::Object{ build_gfx_value_pair(menu_keys::class_name, actor_base->npcClass->GetName()) });
                 key_value_level_.data_provider(
                     CLIK::Object{ build_gfx_value_pair(menu_keys::level, std::to_string(actor->GetLevel())) });
+                //maybe hide with cfg because it could spoiler some things
                 key_value_faction_.data_provider(
                     CLIK::Object{ build_gfx_value_pair(menu_keys::faction, actor_data::get_faction(actor)) });
 
