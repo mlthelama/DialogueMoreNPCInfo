@@ -9,6 +9,7 @@
     "boost-atomic",
     "boost-stl-interfaces",
     "span-lite",
-    "spdlog"
+    "spdlog",
+    "rsm-binary-io"
   ]
 }
