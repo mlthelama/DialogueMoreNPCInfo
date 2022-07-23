@@ -1,7 +1,7 @@
 # DialogueMoreNPCInfo
 
-## Nexus Mods (Not yet there)
-* [DialogueMoreNPCInfo](https://www.nexusmods.com/skyrimspecialedition/mods/?)
+## Nexus Mods
+* [DialogueMoreNPCInfo](https://www.nexusmods.com/skyrimspecialedition/mods/71866)
 
 ## End User Dependencies
 * [SKSE64](https://skse.silverlock.org/)
