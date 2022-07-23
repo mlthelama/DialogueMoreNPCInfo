@@ -33,11 +33,12 @@ namespace scaleform {
         }
 
         static bool is_menu_open() {
-            auto is_open = RE::UI::GetSingleton()->IsMenuOpen(menu_name);
+            /*auto is_open = RE::UI::GetSingleton()->IsMenuOpen(menu_name);
             if (is_open) {
                 logger::trace("Menu {} is open {}"sv, menu_name, is_open);
             }
-            return is_open;
+            return is_open;*/
+            return RE::UI::GetSingleton()->IsMenuOpen(menu_name);
         }
 
         void refresh_items() {
@@ -174,6 +175,8 @@ namespace scaleform {
                      element_t{ std::ref(key_value_aggression_), "_root.rootObj.keyValueAggression"sv },
                      element_t{ std::ref(key_value_mood_), "_root.rootObj.keyValueMood"sv },
                      element_t{ std::ref(key_value_relation_), "_root.rootObj.keyValueRelation"sv },
+                     element_t{ std::ref(key_value_best_skill_first_), "_root.rootObj.keyValueBestSkillFirst"sv },
+                     element_t{ std::ref(key_value_best_skill_second_), "_root.rootObj.keyValueBestSkillSecond"sv }
                  }; const auto& [object, path] : objects) {
                 auto& instance = object.get().GetInstance();
                 [[maybe_unused]] const auto success = view_->GetVariable(std::addressof(instance), path.data());
@@ -182,6 +185,7 @@ namespace scaleform {
             logger::debug("Loaded all SWF objects successfully for {}"sv, menu_name);
 
             root_obj_.Visible(false);
+            adjust_position();
 
             fill_fields();
 
@@ -258,7 +262,7 @@ namespace scaleform {
                 const auto teaches = actor_data::get_is_trainer(actor_base);
                 if (const auto max_training = actor_data::get_max_trainings_level(actor_base);
                     !teaches.empty() && max_training > 0) {
-                    const auto max_string = fmt::format(FMT_STRING("({})"), max_training);
+                    const auto max_string = format(FMT_STRING("({})"), max_training);
                     key_value_trainer_.data_provider(CLIK::Object{
                         build_gfx_value_pair_with_max(menu_keys::trainer, teaches, max_string) });
                 } else {
@@ -284,6 +288,17 @@ namespace scaleform {
                 set_mood_data(actor_base);
 
                 set_relationship_data(actor);
+
+                if (auto av_list = actor_data::get_best_skills(actor); !av_list.empty()) {
+                    auto a_value = format(FMT_STRING("({})"), av_list.at(0).second);
+                    key_value_best_skill_first_.data_provider(
+                        CLIK::Object{
+                            build_gfx_value_pair_with_max(menu_keys::best_skills, av_list.at(0).first, a_value) });
+
+                    a_value = format(FMT_STRING("({})"), av_list.at(1).second);
+                    key_value_best_skill_second_.data_provider(
+                        CLIK::Object{ build_gfx_value_pair_with_max(" "sv, av_list.at(1).first, a_value) });
+                }
             }
 
             logger::trace("done filling the fields with data"sv);
@@ -308,6 +323,12 @@ namespace scaleform {
                 CLIK::Object{ build_gfx_value_pair(menu_keys::mood, actor_data::get_mood(a_actor_base)) });
         }
 
+        void adjust_position() {
+            root_obj_.X(static_cast<double>(*setting::x_pos));
+            root_obj_.Y(static_cast<double>(*setting::y_pos));
+            logger::trace("Current Position is: X {}, Y {}"sv, root_obj_.X(), root_obj_.Y());
+        }
+
 
         RE::GPtr<RE::GFxMovieView> view_;
         bool is_active_ = false;
@@ -322,9 +343,10 @@ namespace scaleform {
         CLIK::lazy_data_setter key_value_gender_;
         CLIK::lazy_data_setter key_value_class_;
         CLIK::lazy_data_setter key_value_level_;
-        CLIK::lazy_data_setter key_value_faction_;
         CLIK::lazy_data_setter key_value_trainer_;
         CLIK::lazy_data_setter key_value_vendor_;
+        CLIK::lazy_data_setter key_value_best_skill_first_;
+        CLIK::lazy_data_setter key_value_best_skill_second_;
 
         CLIK::lazy_data_setter key_value_morality_;
         CLIK::lazy_data_setter key_value_assistance_;
@@ -332,6 +354,6 @@ namespace scaleform {
         CLIK::lazy_data_setter key_value_aggression_;
         CLIK::lazy_data_setter key_value_mood_;
         CLIK::lazy_data_setter key_value_relation_;
-
+        CLIK::lazy_data_setter key_value_faction_;
     };
 }

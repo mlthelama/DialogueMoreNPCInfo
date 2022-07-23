@@ -95,6 +95,25 @@ public:
         return false;
     }
 
+    static std::vector<std::pair<std::string_view, float>> get_best_skills(RE::Actor*& a_actor) {
+        std::vector<std::pair<std::string_view, float>> actor_value_vec;
+        for (auto& [av, av_translation] : actor_value_string_map_) {
+            actor_value_vec.emplace_back(av_translation, a_actor->GetActorValue(av));
+        }
+
+        std::ranges::sort(actor_value_vec, sort_by_val);
+
+        //keep 2 elements, should be enough, for now, otherwise I need a List in the UI
+        if (!actor_value_vec.empty()) {
+            actor_value_vec.resize(2);
+        }
+
+        for (auto& [actor_value, av_value] : actor_value_vec) {
+            logger::trace("Actor {}, AV {}, Value {}"sv, a_actor->GetName(), actor_value, av_value);
+        }
+        return actor_value_vec;
+    }
+
     actor_data(const actor_data&) = delete;
     actor_data(actor_data&&) = delete;
 
@@ -112,6 +131,10 @@ private:
             return "";
         }
         return a_map.find(a_key)->second;
+    }
+
+    static bool sort_by_val(const std::pair<std::string_view, float>& a, const std::pair<std::string_view, float>& b) {
+        return a.second > b.second;
     }
 
     //TODO add translation/config for the strings
@@ -228,5 +251,26 @@ private:
         { RE::CLASS_DATA::Skill::kIllusion, menu_keys::illusion },
         { RE::CLASS_DATA::Skill::kRestoration, menu_keys::restoration },
         { RE::CLASS_DATA::Skill::kEnchanting, menu_keys::enchanting }
+    };
+
+    inline static std::map<RE::ActorValue, std::string_view> actor_value_string_map_ = {
+        { RE::ActorValue::kOneHanded, menu_keys::one_handed },
+        { RE::ActorValue::kTwoHanded, menu_keys::two_handed },
+        { RE::ActorValue::kArchery, menu_keys::archery },
+        { RE::ActorValue::kBlock, menu_keys::block },
+        { RE::ActorValue::kSmithing, menu_keys::smithing },
+        { RE::ActorValue::kHeavyArmor, menu_keys::heavy_armor },
+        { RE::ActorValue::kLightArmor, menu_keys::light_armor },
+        { RE::ActorValue::kPickpocket, menu_keys::pickpocket },
+        { RE::ActorValue::kLockpicking, menu_keys::lockpicking },
+        { RE::ActorValue::kSneak, menu_keys::sneak },
+        { RE::ActorValue::kAlchemy, menu_keys::alchemy },
+        { RE::ActorValue::kSpeech, menu_keys::speech },
+        { RE::ActorValue::kAlteration, menu_keys::alteration },
+        { RE::ActorValue::kConjuration, menu_keys::conjuration },
+        { RE::ActorValue::kDestruction, menu_keys::destruction },
+        { RE::ActorValue::kIllusion, menu_keys::illusion },
+        { RE::ActorValue::kRestoration, menu_keys::restoration },
+        { RE::ActorValue::kEnchanting, menu_keys::enchanting }
     };
 };

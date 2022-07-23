@@ -85,4 +85,6 @@ namespace menu_keys {
 
     constexpr auto hand_to_hand = "$DMNIHandToHand"sv;
     constexpr auto security = "$DMNISecurity"sv;
+
+    constexpr auto best_skills = "$DMNIBestSkills"sv;
 }
