@@ -1,3 +1,4 @@
+#include "event.h"
 #include "hook.h"
 #include "scaleform/scaleform.h"
 #include "setting/setting.h"
@@ -8,6 +9,7 @@ void MessageHandler(SKSE::MessagingInterface::Message* a_msg) {
         case SKSE::MessagingInterface::kDataLoaded:
             logger::info("Data loaded"sv);
             hook::install_hooks();
+            event::sink_event_handlers();
             scaleform::Register();
             break;
     }
@@ -67,12 +69,12 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
     try {
         logger::info("{} loading"sv, Version::PROJECT.data());
         try {
-            setting::load();
+            setting::load_settings();
         } catch (const std::exception& e) { logger::warn("failed to load setting {}"sv, e.what()); }
 
         Init(a_skse);
 
-        switch (*setting::log_level) {
+        switch (setting::get_log_level()) {
             case util::const_log_trace:
                 spdlog::set_level(spdlog::level::trace);
                 spdlog::flush_on(spdlog::level::trace);

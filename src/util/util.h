@@ -44,7 +44,7 @@ namespace util {
             //if not found, same value will be returned
             race = get_mer_name(race);
 
-            const auto avatar = *setting::avatar_set ? "var_" : "org_";
+            const auto avatar = setting::get_avatar_set() == 1 ? "var_" : "org_";
 
             return avatar + race + "_" + string_util::to_lower(gender);
         }

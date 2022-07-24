@@ -30,7 +30,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STR
 
 project(
 	DialogueMoreNPCInfo
-	VERSION 1.0.1.0
+	VERSION 1.0.2.0
 	LANGUAGES CXX
 )
 
@@ -80,7 +80,6 @@ set(Boost_USE_STATIC_LIBS ON)
 add_subdirectory("extern/CommonLibSSE" CommonLibSSE)
 
 find_package(spdlog REQUIRED CONFIG)
-find_package(AutoTOML REQUIRED CONFIG)
 
 # ---- Add source files ----
 
@@ -111,7 +110,7 @@ add_library(
 	${CMAKE_CURRENT_BINARY_DIR}/version.rc
 	.clang-format
     .editorconfig
-    DialogueMoreNPCInfo.toml
+    DialogueMoreNPCInfo.ini
 )
 
 target_compile_features(
@@ -130,7 +129,6 @@ target_include_directories(
 target_link_libraries(
 	${PROJECT_NAME}
 	PRIVATE
-		AutoTOML::AutoTOML
 		CommonLibSSE::CommonLibSSE
 		spdlog::spdlog
 )

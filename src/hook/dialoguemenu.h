@@ -27,8 +27,11 @@ namespace hook {
                     const auto player = RE::PlayerCharacter::GetSingleton();
                     logger::trace("Player is {}, Target is {}"sv, player->GetName(), dialog_target->GetName());
 
-                    if (!scaleform::dialogue_info_menu::is_menu_open()) {
-                        scaleform::dialogue_info_menu::open();
+                    //only show if we are allowed to
+                    if (setting::get_show_window()) {
+                        if (!scaleform::dialogue_info_menu::is_menu_open()) {
+                            scaleform::dialogue_info_menu::open();
+                        }
                     }
                 }
             } else if (a_message.type.get() == RE::UI_MESSAGE_TYPE::kHide) {
