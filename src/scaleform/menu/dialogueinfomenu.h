@@ -324,8 +324,8 @@ namespace scaleform {
         }
 
         void adjust_position() {
-            root_obj_.X(static_cast<double>(*setting::x_pos));
-            root_obj_.Y(static_cast<double>(*setting::y_pos));
+            root_obj_.X(setting::get_pos_x());
+            root_obj_.Y(setting::get_pos_y());
             logger::trace("Current Position is: X {}, Y {}"sv, root_obj_.X(), root_obj_.Y());
         }
 

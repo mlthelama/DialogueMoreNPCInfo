@@ -8,14 +8,14 @@ def make_rel_archive(a_args):
         a_args.dll,
         "SKSE/Plugins/{}".format(os.path.basename(a_args.dll)))
     archive.write(
-        os.path.join(a_args.src_dir, "DialogueMoreNPCInfo.toml"),
-        "SKSE/Plugins/DialogueMoreNPCInfo.toml")
-    archive.write(
         os.path.join(a_args.src_dir, "swf", "out", "DialogueInfoMenu.swf"),
         "Interface/DialogueInfoMenu.swf")
     archive.write(
         os.path.join(a_args.src_dir, "translations", "DialogueMoreNPCInfo_english.txt"),
         "Interface/Translations/DialogueMoreNPCInfo_english.txt")
+    archive.write(
+        os.path.join(a_args.src_dir, "DialogueMoreNPCInfo.ini"),
+        "SKSE/Plugins/DialogueMoreNPCInfo.ini")
 
 
 def make_dbg_archive(a_args):

@@ -1,15 +1,15 @@
 {
   "name": "dialoguemorenpcinfo",
-  "version-string": "1.0.1",
+  "version-string": "1.0.2",
   "description": "A Window to display more NPC Info",
   "homepage": "https://github.com/mlthelama/DialogueMoreNPCInfo",
   "license": "MIT",
   "dependencies": [
-  	"autotoml",
     "boost-atomic",
     "boost-stl-interfaces",
     "span-lite",
     "spdlog",
-    "rsm-binary-io"
+    "rsm-binary-io",
+    "simpleini"
   ]
 }

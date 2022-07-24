@@ -1,33 +1,84 @@
 #pragma once
 
-struct setting {
-    using i_setting = AutoTOML::ISetting;
-    using bool_setting = AutoTOML::bSetting;
-    using str_setting = AutoTOML::sSetting;
-    using int_setting = AutoTOML::iSetting;
+#include <SimpleIni.h>
 
-    static void load() {
-        try {
-            const auto table = toml::parse_file("Data/SKSE/Plugins/DialogueMoreNPCInfo.toml"s);
-            for (const auto& setting : i_setting::get_settings()) { setting->load(table); }
-        } catch (const toml::parse_error& ex) {
-            std::ostringstream ss;
-            ss << "Error parsing file \'" << *ex.source().path << "\':\n"
-                << '\t' << ex.description() << '\n'
-                << "\t\t(" << ex.source().begin << ')';
-            logger::error(ss.str());
-            throw std::runtime_error("failed to load settings"s);
-        }
+class setting {
+    inline static const char* ini_path_ = R"(.\Data\SKSE\Plugins\DialogueMoreNPCInfo.ini)";
+
+    inline static int log_level_;
+    inline static int avatar_set_;
+    inline static bool hide_faction_;
+    inline static int toggle_key_;
+
+    inline static int pos_x_;
+    inline static int pos_y_;
+
+    inline static bool hand_to_hand_;
+
+    inline static bool show_window_;
+
+public:
+    static void load_settings() {
+        CSimpleIniA ini;
+        ini.SetUnicode();
+        ini.LoadFile(ini_path_);
+
+        log_level_ = ini.GetLongValue("General", "iLogLevel", 2);
+        avatar_set_ = ini.GetLongValue("General", "iAvatarSet", 0);
+        hide_faction_ = ini.GetBoolValue("General", "bHideFaction", false);
+        toggle_key_ = ini.GetLongValue("General", "iToggleButton", 34); //G
+
+        pos_x_ = ini.GetLongValue("Window", "iPosX", 405);
+        pos_y_ = ini.GetLongValue("Window", "iPosY", 320);
+
+        hand_to_hand_ = ini.GetBoolValue("Mods", "bHandToHand", false);
+
+        show_window_ = ini.GetBoolValue("Toggle", "bShowWindow", true);
     }
 
-    //static inline const char* _constUndefined = "<undef>";
+    static void set_show_window(const bool a_show_value) {
+        logger::debug("setting new value for {} is {}"sv, "bShowWindow", a_show_value);
+        show_window_ = a_show_value;
 
-    static inline int_setting log_level{ "General"s, "logLevel"s, 0 };
-    static inline int_setting avatar_set{ "General"s, "avatarSet"s, 0 };
-    static inline bool_setting hide_faction{"General"s, "hideFaction"s, true};
+        CSimpleIniA ini;
+        ini.SetUnicode();
+        ini.LoadFile(ini_path_);
 
-    static inline int_setting x_pos{"Window"s, "xPos"s, 0};
-    static inline int_setting y_pos{"Window"s, "yPos"s, 0};
-    
-    static inline bool_setting hand_to_hand{ "Mods"s, "handToHand"s, true };
+        ini.SetBoolValue("Toggle", "bShowWindow", a_show_value);
+
+        (void)ini.SaveFile(ini_path_);
+    }
+
+    static int get_log_level() {
+        return log_level_;
+    }
+
+    static int get_avatar_set() {
+        return avatar_set_;
+    }
+
+    static bool get_hide_faction() {
+        return hide_faction_;
+    }
+
+    static int get_toggle_key() {
+        return toggle_key_;
+    }
+
+    static int get_pos_x() {
+        return pos_x_;
+    }
+
+    static int get_pos_y() {
+        return pos_y_;
+    }
+
+    static bool get_hand_to_hand() {
+        return hand_to_hand_;
+    }
+
+    static bool get_show_window() {
+        return show_window_;
+    }
+
 };

@@ -7,6 +7,8 @@ set(sources ${sources}
 	src/CLIK/lazydatasetter.h
 	src/PCH.h
 	src/data/actordata.h
+	src/event.h
+	src/event/keymanager.h
 	src/handle/dialogueactorhandle.h
 	src/hook.h
 	src/hook/dialoguemenu.h
