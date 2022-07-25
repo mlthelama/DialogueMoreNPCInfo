@@ -1,4 +1,5 @@
 #pragma once
+#include "util/constant.h"
 #include "util/menukeys.h"
 #include "util/util.h"
 
@@ -65,7 +66,8 @@ public:
     static std::string_view get_is_trainer(RE::TESNPC*& a_tesnpc) {
         const auto teaches_skill = a_tesnpc->npcClass->data.teaches;
         //will 0 = onehanded even when the npc does not train it, but maximumTraining could help here
-        if (a_tesnpc->npcClass->data.maximumTrainingLevel > 0) {
+        if (const auto max = a_tesnpc->npcClass->data.maximumTrainingLevel;
+            max >= util::min_train_level or max <= util::max_train_level) {
             // handle hand to hand support
             auto value = get_value_from_map(teaching_skill_string_map_, teaches_skill.get());
             if (setting::get_hand_to_hand()) {
