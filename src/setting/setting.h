@@ -12,6 +12,8 @@ class setting {
 
     inline static int pos_x_;
     inline static int pos_y_;
+    inline static int scale_x_;
+    inline static int scale_y_;
 
     inline static bool hand_to_hand_;
 
@@ -30,6 +32,8 @@ public:
 
         pos_x_ = ini.GetLongValue("Window", "iPosX", 405);
         pos_y_ = ini.GetLongValue("Window", "iPosY", 320);
+        scale_x_ = ini.GetLongValue("Window", "iScaleX", 100);
+        scale_y_ = ini.GetLongValue("Window", "iScaleY", 100);
 
         hand_to_hand_ = ini.GetBoolValue("Mods", "bHandToHand", false);
 
@@ -73,6 +77,14 @@ public:
         return pos_y_;
     }
 
+    static int get_scale_x() {
+        return scale_x_;
+    }
+
+    static int get_scale_y() {
+        return scale_y_;
+    }
+    
     static bool get_hand_to_hand() {
         return hand_to_hand_;
     }
@@ -80,5 +92,4 @@ public:
     static bool get_show_window() {
         return show_window_;
     }
-
 };
