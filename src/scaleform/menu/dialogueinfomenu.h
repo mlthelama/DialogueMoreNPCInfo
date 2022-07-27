@@ -186,6 +186,7 @@ namespace scaleform {
 
             root_obj_.Visible(false);
             adjust_position();
+            scale_window();
 
             fill_fields();
 
@@ -329,6 +330,11 @@ namespace scaleform {
             logger::trace("Current Position is: X {}, Y {}"sv, root_obj_.X(), root_obj_.Y());
         }
 
+        void scale_window() {
+            root_obj_.XScale(setting::get_scale_x());
+            root_obj_.YScale(setting::get_scale_y());
+            logger::trace("Scaled Window");
+        }
 
         RE::GPtr<RE::GFxMovieView> view_;
         bool is_active_ = false;
