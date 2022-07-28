@@ -86,8 +86,9 @@ namespace scaleform {
             logger::debug("Loading Menu {} was successful {}"sv, file_name, success);
             assert(success);
             view_ = menu->uiMovie;
-            //_view->SetMouseCursorCount(0);
-            menu->menuFlags |= flag::kUsesCursor;
+            view_->SetMouseCursorCount(0);
+            
+            //menu->menuFlags |= flag::kUsesCursor;
 
             //menu->depthPriority = 0;
             //menu->inputContext = Context::kNone;
@@ -115,8 +116,12 @@ namespace scaleform {
                 default:
                     return RE::IMenu::ProcessMessage(a_message);
             }*/
-
+            
             if (a_message.menu == menu_name) {
+                if (*a_message.type == RE::UI_MESSAGE_TYPE::kUpdateController) {
+                    RefreshPlatform();
+                    return RE::UI_MESSAGE_RESULTS::kPassOn;
+                }
                 return RE::UI_MESSAGE_RESULTS::kHandled;
             }
             return RE::UI_MESSAGE_RESULTS::kPassOn;
@@ -127,6 +132,8 @@ namespace scaleform {
         }
 
         void Accept(CallbackProcessor* a_processor) override { a_processor->Process("Log", log); }
+
+        //void RefreshPlatform() override {}
 
     private:
         class Logger : public RE::GFxLog {
