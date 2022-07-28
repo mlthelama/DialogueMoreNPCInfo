@@ -87,8 +87,9 @@ namespace scaleform {
             assert(success);
             view_ = menu->uiMovie;
             view_->SetMouseCursorCount(0);
-            
+
             //menu->menuFlags |= flag::kUsesCursor;
+            menu->menuFlags |= flag::kAssignCursorToRenderer;
 
             //menu->depthPriority = 0;
             //menu->inputContext = Context::kNone;
@@ -116,7 +117,7 @@ namespace scaleform {
                 default:
                     return RE::IMenu::ProcessMessage(a_message);
             }*/
-            
+
             if (a_message.menu == menu_name) {
                 if (*a_message.type == RE::UI_MESSAGE_TYPE::kUpdateController) {
                     RefreshPlatform();
@@ -133,7 +134,7 @@ namespace scaleform {
 
         void Accept(CallbackProcessor* a_processor) override { a_processor->Process("Log", log); }
 
-        //void RefreshPlatform() override {}
+        void RefreshPlatform() override { IMenu::RefreshPlatform(); }
 
     private:
         class Logger : public RE::GFxLog {
