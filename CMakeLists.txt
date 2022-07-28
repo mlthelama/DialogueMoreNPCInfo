@@ -29,7 +29,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STR
 
 project(
 	DialogueMoreNPCInfo
-	VERSION 1.0.4.0
+	VERSION 1.0.5.0
 	LANGUAGES CXX
 )
 

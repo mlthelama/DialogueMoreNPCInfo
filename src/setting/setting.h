@@ -84,7 +84,7 @@ public:
     static int get_scale_y() {
         return scale_y_;
     }
-    
+
     static bool get_hand_to_hand() {
         return hand_to_hand_;
     }
