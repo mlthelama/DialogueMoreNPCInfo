@@ -1,22 +1,54 @@
+
+[![Badge License]][License]
+
+<br>
+
+<div align = center>
+
 # DialogueMoreNPCInfo
 
-## Nexus Mods
-* [DialogueMoreNPCInfo](https://www.nexusmods.com/skyrimspecialedition/mods/71866)
+*A Skrim mod to display more NPC information.*
 
-## End User Dependencies
-* [SKSE64](https://skse.silverlock.org/)
-* [Address Library for SKSE Plugins](https://www.nexusmods.com/skyrimspecialedition/mods/32444)
+<br>
+<br>
+<br>
+<br>
 
-## Build Dependencies
-* [CommonLibSSE](https://github.com/Ryan-rsm-McKenzie/CommonLibSSE)
-* [spdlog](https://github.com/gabime/spdlog)
+[![Button Nexus]][Nexus]   
+[![Button Build]][Build]
+
+</div>
+
+<br>
+<br>
+
+## Requirements
+
+*Things you need to use this mod.*
+
+- **[Address Library]**
+
+- **[SKSE64]**
+
+<br>
 
 
-## Building
-```
-git clone https://github.com/mlthelama/DialogueMoreNPCInfo.git
-cd DialogueMoreNPCInfo
+<!----------------------------------------------------------------------------->
 
-git submodule update --init --recursive
-cmake -B build -S .
-```
+[Address Library]: https://www.nexusmods.com/skyrimspecialedition/mods/32444
+[SKSE64]: https://skse.silverlock.org/
+[Nexus]: https://www.nexusmods.com/skyrimspecialedition/mods/? 'Not yet available'
+
+[License]: LICENSE
+[Build]: Documentation/Building.md
+
+
+<!----------------------------------[ Badges ]--------------------------------->
+
+[Badge License]: https://img.shields.io/badge/License-MIT-ac8b11.svg?style=for-the-badge&labelColor=yellow
+
+
+<!---------------------------------[ Buttons ]--------------------------------->
+
+[Button Build]: https://img.shields.io/badge/Building-0080FF?style=for-the-badge&logoColor=white&logo=GitBook
+[Button Nexus]: https://img.shields.io/badge/Ｎｅｘｕｓ_Mods-8197ec?style=for-the-badge&logoColor=white&logo=Dragonframe
