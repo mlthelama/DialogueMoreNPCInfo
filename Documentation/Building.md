@@ -11,8 +11,6 @@
 
 - **[CommonLibSSE]**
 
-- **[AutoTOML]**
-
 - **[spdlog]**
 
 <br>
@@ -58,5 +56,4 @@
 <!----------------------------------------------------------------------------->
 
 [CommonLibSSE]: https://github.com/Ryan-rsm-McKenzie/CommonLibSSE
-[AutoTOML]: https://github.com/Ryan-rsm-McKenzie/AutoTOML
 [spdlog]: https://github.com/gabime/spdlog
