@@ -25,11 +25,16 @@ endif ()
 set(Boost_USE_STATIC_RUNTIME OFF CACHE BOOL "")
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "")
 
+option(ENABLE_SKYRIM_SE "Enable support for Skyrim SE in the dynamic runtime feature." ON)
+option(ENABLE_SKYRIM_AE "Enable support for Skyrim AE in the dynamic runtime feature." ON)
+option(ENABLE_SKYRIM_VR "Enable support for Skyrim VR in the dynamic runtime feature." OFF)
+set(BUILD_TESTS OFF)
+
 # ---- Project ----
 
 project(
 	DialogueMoreNPCInfo
-	VERSION 1.0.5.0
+	VERSION 1.0.6.0
 	LANGUAGES CXX
 )
 
@@ -76,7 +81,7 @@ set(Boost_USE_STATIC_LIBS ON)
 
 # ---- Dependencies ----
 
-add_subdirectory("extern/CommonLibSSE" CommonLibSSE)
+find_package(CommonLibSSE CONFIG REQUIRED)
 
 find_package(spdlog REQUIRED CONFIG)
 

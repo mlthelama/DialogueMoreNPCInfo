@@ -1,6 +1,6 @@
 {
   "name": "dialoguemorenpcinfo",
-  "version-string": "1.0.5",
+  "version-string": "1.0.6",
   "description": "A Window to display more NPC Info",
   "homepage": "https://github.com/mlthelama/DialogueMoreNPCInfo",
   "license": "MIT",
@@ -9,6 +9,7 @@
     "boost-stl-interfaces",
     "span-lite",
     "spdlog",
-    "simpleini"
+    "simpleini",
+    "commonlibsse-ng-flatrim"
   ]
 }
