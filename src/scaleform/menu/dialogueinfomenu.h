@@ -249,6 +249,9 @@ namespace scaleform {
 
                 const auto gender = actor_data::get_gender(actor_base);
                 const auto race = actor->GetRace()->GetName();
+                //create a map for formid to english name + make translations for that
+                logger::trace("Race formid is {}, name is {}", util::string_util::int_to_hex(actor->GetRace()->GetFormID()), actor->GetRace()->GetName());
+
 
                 update_text(race_, race); //center value
                 //icon for gender
