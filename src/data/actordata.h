@@ -95,7 +95,7 @@ public:
     }
 
     static bool is_vendor(RE::Actor*& a_actor) {
-        if (a_actor->vendorFaction) {
+        if (a_actor->GetActorRuntimeData().vendorFaction) {
             //we could get more info but for now it will do
             //return vendorFaction->IsVendor();
             return true;
@@ -106,7 +106,7 @@ public:
     static std::vector<std::pair<std::string_view, float>> get_best_skills(RE::Actor*& a_actor) {
         std::vector<std::pair<std::string_view, float>> actor_value_vec;
         for (auto& [av, av_translation] : actor_value_string_map_) {
-            actor_value_vec.emplace_back(av_translation, a_actor->GetActorValue(av));
+            actor_value_vec.emplace_back(av_translation, a_actor->AsActorValueOwner()->GetActorValue(av));
         }
 
         std::ranges::sort(actor_value_vec, sort_by_val);
