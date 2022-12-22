@@ -8,7 +8,7 @@
 class actor_data final {
 public:
     static std::string_view get_gender(RE::TESNPC*& a_tesnpc) {
-        return get_value_from_map(gender_string_map_, a_tesnpc->GetSex());
+        return get_value_from_map(gender_translation_key_map_, a_tesnpc->GetSex());
     }
 
     static std::string_view get_morality(RE::TESNPC*& a_tesnpc) {
@@ -122,6 +122,18 @@ public:
         return actor_value_vec;
     }
 
+    static std::string get_race_name_for_icon(RE::FormID& a_formId) {
+        return get_value_from_map(race_formid_string_map_, a_formId);
+    }
+
+    static std::string_view get_race_translation_name(RE::FormID& a_formId) {
+        return get_value_from_map(race_formid_translation_key_map_, a_formId);
+    }
+
+    static std::string get_gender_name_for_icon(RE::TESNPC*& a_tesnpc) {
+        return get_value_from_map(gender_string_map_, a_tesnpc->GetSex());
+    }
+
     actor_data(const actor_data&) = delete;
     actor_data(actor_data&&) = delete;
 
@@ -141,13 +153,25 @@ private:
         return a_map.find(a_key)->second;
     }
 
+    template <typename T>
+    static std::string get_value_from_map(std::map<T, std::string>& a_map, T a_key) {
+        //in case the value
+        if (!a_map.contains(a_key)) {
+            return "";
+        }
+        return a_map.find(a_key)->second;
+    }
+
     static bool sort_by_val(const std::pair<std::string_view, float>& a, const std::pair<std::string_view, float>& b) {
         return a.second > b.second;
     }
 
-    //TODO add translation/config for the strings
-    inline static std::map<RE::SEX, std::string_view> gender_string_map_ = { { RE::SEX::kMale, menu_keys::male },
-                                                                             { RE::SEX::kFemale, menu_keys::female } };
+    inline static std::map<RE::SEX, std::string_view> gender_translation_key_map_ = {
+        { RE::SEX::kMale, menu_keys::male },
+        { RE::SEX::kFemale, menu_keys::female } };
+
+    inline static std::map<RE::SEX, std::string> gender_string_map_ = { { RE::SEX::kMale, "male" },
+                                                                        { RE::SEX::kFemale, "female" } };
 
     inline static std::map<RE::ACTOR_MORALITY, std::string_view> morality_string_map_ = {
         { RE::ACTOR_MORALITY::kAnyCrime, menu_keys::any_crime },
@@ -280,5 +304,31 @@ private:
         { RE::ActorValue::kIllusion, menu_keys::illusion },
         { RE::ActorValue::kRestoration, menu_keys::restoration },
         { RE::ActorValue::kEnchanting, menu_keys::enchanting }
+    };
+
+    inline static std::map<RE::FormID, std::string> race_formid_string_map_ = {
+        { 0x00013740, "argonian" },
+        { 0x00013741, "breton" },
+        { 0x00013742, "dumner" },
+        { 0x00013743, "altmer" },
+        { 0x00013744, "imperial" },
+        { 0x00013745, "khajiit" },
+        { 0x00013746, "nord" },
+        { 0x00013747, "orc" },
+        { 0x00013748, "redguard" },
+        { 0x00013749, "bosmer" }
+    };
+
+    inline static std::map<RE::FormID, std::string_view> race_formid_translation_key_map_ = {
+        { 0x00013740, menu_keys::argonian },
+        { 0x00013741, menu_keys::breton },
+        { 0x00013742, menu_keys::dark_elf },
+        { 0x00013743, menu_keys::high_elf },
+        { 0x00013744, menu_keys::imperial },
+        { 0x00013745, menu_keys::khajiit },
+        { 0x00013746, menu_keys::nord },
+        { 0x00013747, menu_keys::orc },
+        { 0x00013748, menu_keys::redguard },
+        { 0x00013749, menu_keys::wood_elf }
     };
 };

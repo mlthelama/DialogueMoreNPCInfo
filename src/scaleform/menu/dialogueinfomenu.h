@@ -247,22 +247,25 @@ namespace scaleform {
                     util::string_util::int_to_hex(actor->formID),
                     util::string_util::int_to_hex(actor_base->formID));
 
-                const auto gender = actor_data::get_gender(actor_base);
-                const auto race = actor->GetRace()->GetName();
-                //create a map for formid to english name + make translations for that
-                logger::trace("Race formid is {}, name is {}", util::string_util::int_to_hex(actor->GetRace()->GetFormID()), actor->GetRace()->GetName());
 
+                logger::trace("Race formid is {}, name is {}, Key is {}",
+                    util::string_util::int_to_hex(actor->GetRace()->GetFormID()),
+                    actor->GetRace()->GetName(),
+                    actor_data::get_race_translation_name(actor->GetRace()->formID));
 
-                update_text(race_, race); //center value
+                update_text(race_, actor_data::get_race_translation_name(actor->GetRace()->formID));
                 //icon for gender
                 key_value_name_.data_provider(CLIK::Object{ build_gfx_value_pair(menu_keys::name, actor->GetName()) });
 
-                auto icon_key = util::avatar_util::get_avatar_key(race, static_cast<std::string>(gender));
+                auto icon_key = util::avatar_util::get_avatar_key(
+                    actor_data::get_race_name_for_icon(actor->GetRace()->formID),
+                    actor_data::get_gender_name_for_icon(actor_base));
                 logger::trace("icon key is: {}"sv, icon_key);
 
                 picture_back_.data_provider(CLIK::Object{ build_gfx_value_icon(icon_key) });
 
-                key_value_gender_.data_provider(CLIK::Object{ build_gfx_value_pair(menu_keys::gender, gender) });
+                key_value_gender_.data_provider(
+                    CLIK::Object{ build_gfx_value_pair(menu_keys::gender, actor_data::get_gender(actor_base)) });
                 key_value_class_.data_provider(
                     CLIK::Object{ build_gfx_value_pair(menu_keys::class_name, actor_base->npcClass->GetName()) });
                 key_value_level_.data_provider(

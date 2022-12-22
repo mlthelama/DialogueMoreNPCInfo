@@ -4,6 +4,10 @@ import zipfile
 
 def make_rel_archive(a_args):
     archive = zipfile.ZipFile(a_args.name + ".zip", "w", zipfile.ZIP_DEFLATED)
+
+    # english is already existing, those are just needed to copy the english one
+    languages = ["czech", "french", "german", "italian", "japanese", "polish", "russian", "spanish"]
+
     archive.write(
         a_args.dll,
         "SKSE/Plugins/{}".format(os.path.basename(a_args.dll)))
@@ -17,6 +21,10 @@ def make_rel_archive(a_args):
         os.path.join(a_args.src_dir, "DialogueMoreNPCInfo.ini"),
         "SKSE/Plugins/DialogueMoreNPCInfo.ini")
 
+    for lang in languages:
+        archive.write(
+            os.path.join(a_args.src_dir, "translations", "DialogueMoreNPCInfo_english.txt"),
+            "Interface/Translations/DialogueMoreNPCInfo_" + lang + ".txt")
 
 def make_dbg_archive(a_args):
     archive = zipfile.ZipFile(a_args.name + "_pdb" + ".zip", "w", zipfile.ZIP_DEFLATED)

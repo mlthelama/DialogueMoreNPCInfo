@@ -20,33 +20,10 @@ namespace util {
     };
 
     class avatar_util {
-        inline static std::map<std::string_view, std::string_view> mer_name_map_ = {
-            { "wood elf", "bosmer" },
-            { "high elf", "altmer" },
-            { "dark elf", "dunmer" },
-        };
-
-        static std::string_view get_mer_name(std::string_view a_name) {
-            if (!mer_name_map_.contains(a_name)) {
-                logger::debug("can not find name {}. return the same value."sv, a_name);
-                return a_name;
-            }
-            return mer_name_map_.find(a_name)->second;
-        }
-
     public:
         static std::string get_avatar_key(const std::string& a_race, const std::string& a_gender) {
-            //to remove the text key, not the cleanest but it brings us the value we need
-            const auto gender = std::regex_replace(a_gender, std::regex("\\$DMNI"), "");
-            auto race = string_util::to_lower(a_race);
-
-            //need map some race names
-            //if not found, same value will be returned
-            race = get_mer_name(race);
-
             const auto avatar = setting::get_avatar_set() == 1 ? "var_" : "org_";
-
-            return avatar + race + "_" + string_util::to_lower(gender);
+            return avatar + a_race + "_" + a_gender;
         }
     };
 }
