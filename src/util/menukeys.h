@@ -88,15 +88,16 @@ namespace menu_keys {
 
     constexpr auto best_skills = "$DMNIBestSkills"sv;
 
-    constexpr auto argonian = "$DMNIArgonian";
-    constexpr auto breton = "$DMNIBreton";
-    constexpr auto dark_elf = "$DMNIDarkElf";
-    constexpr auto high_elf = "$DMNIHighElf";
-    constexpr auto imperial = "$DMNIImperial";
-    constexpr auto khajiit = "$DMNIKhajiit";
-    constexpr auto nord = "$DMNINord";
-    constexpr auto orc = "$DMNIOrc";
-    constexpr auto redguard = "$DMNIRedguard";
-    constexpr auto wood_elf = "$DMNIWoodElf";
+    constexpr auto argonian = "$DMNIArgonian"sv;
+    constexpr auto breton = "$DMNIBreton"sv;
+    constexpr auto dark_elf = "$DMNIDarkElf"sv;
+    constexpr auto high_elf = "$DMNIHighElf"sv;
+    constexpr auto imperial = "$DMNIImperial"sv;
+    constexpr auto khajiit = "$DMNIKhajiit"sv;
+    constexpr auto nord = "$DMNINord"sv;
+    constexpr auto orc = "$DMNIOrc"sv;
+    constexpr auto redguard = "$DMNIRedguard"sv;
+    constexpr auto wood_elf = "$DMNIWoodElf"sv;
+    constexpr auto dragon = "$DMNIDragon"sv;
 
 }

@@ -309,14 +309,20 @@ private:
     inline static std::map<RE::FormID, std::string> race_formid_string_map_ = {
         { 0x00013740, "argonian" },
         { 0x00013741, "breton" },
-        { 0x00013742, "dumner" },
+        { 0x00013742, "dunmer" },
         { 0x00013743, "altmer" },
         { 0x00013744, "imperial" },
         { 0x00013745, "khajiit" },
         { 0x00013746, "nord" },
         { 0x00013747, "orc" },
         { 0x00013748, "redguard" },
-        { 0x00013749, "bosmer" }
+        { 0x00013749, "bosmer" },
+        { 0x00012e82, "dragon" }, //"normal" dragon
+        { 0x000e7713, "dragon" }, //alduin
+        { 0x001052a3, "dragon" }, //undead dragon, not sure if needed
+        { 0x020117de, "dragon" }, //also some dragon race, undead dragon, might be soul cain dragon 
+        { 0x0402c88b, "dragon" }, //called black dragon
+        { 0x0402c88c, "dragon" }  //also called black dragon
     };
 
     inline static std::map<RE::FormID, std::string_view> race_formid_translation_key_map_ = {
@@ -329,6 +335,12 @@ private:
         { 0x00013746, menu_keys::nord },
         { 0x00013747, menu_keys::orc },
         { 0x00013748, menu_keys::redguard },
-        { 0x00013749, menu_keys::wood_elf }
+        { 0x00013749, menu_keys::wood_elf },
+        { 0x00012e82, menu_keys::dragon }, //"normal" dragon
+        { 0x000e7713, menu_keys::dragon }, //alduin
+        { 0x001052a3, menu_keys::dragon }, //undead dragon, not sure if needed
+        { 0x020117de, menu_keys::dragon }, //also some dragon race, undead dragon, might be soul cain dragon 
+        { 0x0402c88b, menu_keys::dragon }, //called black dragon
+        { 0x0402c88c, menu_keys::dragon }  //also called black dragon
     };
 };
