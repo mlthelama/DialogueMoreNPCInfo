@@ -34,7 +34,7 @@ set(BUILD_TESTS OFF)
 
 project(
 	DialogueMoreNPCInfo
-	VERSION 1.0.6.0
+	VERSION 1.0.8.0
 	LANGUAGES CXX
 )
 
