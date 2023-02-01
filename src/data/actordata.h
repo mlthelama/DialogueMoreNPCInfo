@@ -139,6 +139,7 @@ public:
 
     actor_data& operator=(const actor_data&) = delete;
     actor_data& operator=(actor_data&&) = delete;
+
 private:
     actor_data() = default;
 
@@ -166,18 +167,19 @@ private:
         return a.second > b.second;
     }
 
-    inline static std::map<RE::SEX, std::string_view> gender_translation_key_map_ = {
-        { RE::SEX::kMale, menu_keys::male },
+    inline static std::map<RE::SEX, std::string_view> gender_translation_key_map_ = { { RE::SEX::kMale,
+                                                                                          menu_keys::male },
         { RE::SEX::kFemale, menu_keys::female } };
 
     inline static std::map<RE::SEX, std::string> gender_string_map_ = { { RE::SEX::kMale, "male" },
-                                                                        { RE::SEX::kFemale, "female" } };
+        { RE::SEX::kFemale, "female" } };
 
     inline static std::map<RE::ACTOR_MORALITY, std::string_view> morality_string_map_ = {
         { RE::ACTOR_MORALITY::kAnyCrime, menu_keys::any_crime },
         { RE::ACTOR_MORALITY::kViolenceAgainstEnemy, menu_keys::violence_against_enemy },
         { RE::ACTOR_MORALITY::kPropertyCrimeOnly, menu_keys::property_crime_only },
-        { RE::ACTOR_MORALITY::kNoCrime, menu_keys::no_crime } };
+        { RE::ACTOR_MORALITY::kNoCrime, menu_keys::no_crime }
+    };
 
     inline static std::map<RE::ACTOR_ASSISTANCE, std::string_view> assistance_string_map_ = {
         { RE::ACTOR_ASSISTANCE::kHelpsNobody, menu_keys::helps_nobody },
@@ -213,22 +215,22 @@ private:
     };
 
     inline static std::vector<RE::FormID> faction_form_list_{
-        0x000DBF9A, //imperial legion
-        0x00029DA9, //thiefs guild
-        0x00028713, //tribe orc
-        0x0002584B, //pentius
-        0x0003D6C5, //again
-        0x0001F259, //college
-        0x00028849, //stormcloaks
-        0x000266C8, //gray
-        0x00039F26, //thalmor
-        0x0001BDB3, //Db
-        0x00048362, //companions
-        0x00072834, //blades
-        0x000B3292, //vigilant
-        0x04031786, //skaal
-        0x02003376, //vampire, does not have a faction name
-        0x02003375, //dawnguard, does not have a faction name
+        0x000DBF9A,  //imperial legion
+        0x00029DA9,  //thiefs guild
+        0x00028713,  //tribe orc
+        0x0002584B,  //pentius
+        0x0003D6C5,  //again
+        0x0001F259,  //college
+        0x00028849,  //stormcloaks
+        0x000266C8,  //gray
+        0x00039F26,  //thalmor
+        0x0001BDB3,  //Db
+        0x00048362,  //companions
+        0x00072834,  //blades
+        0x000B3292,  //vigilant
+        0x04031786,  //skaal
+        0x02003376,  //vampire, does not have a faction name
+        0x02003375,  //dawnguard, does not have a faction name
     };
 
     enum class relationship_ranks {
@@ -243,10 +245,8 @@ private:
         lover = 4
     };
 
-    static relationship_ranks get_relationship_rank(uint32_t a_arg1,
-        uint32_t a_arg2,
-        RE::Actor* a_source,
-        RE::Actor* a_target) {
+    static relationship_ranks
+        get_relationship_rank(uint32_t a_arg1, uint32_t a_arg2, RE::Actor* a_source, RE::Actor* a_target) {
         using func_t = decltype(&get_relationship_rank);
         const REL::Relocation<func_t> func{ REL::ID(offset::get_relationship_rank) };
         return func(a_arg1, a_arg2, a_source, a_target);
@@ -285,8 +285,8 @@ private:
         { RE::CLASS_DATA::Skill::kEnchanting, menu_keys::enchanting }
     };
 
-    inline static std::map<RE::ActorValue, std::string_view> actor_value_string_map_ = {
-        { RE::ActorValue::kOneHanded, menu_keys::one_handed },
+    inline static std::map<RE::ActorValue, std::string_view> actor_value_string_map_ = { { RE::ActorValue::kOneHanded,
+                                                                                             menu_keys::one_handed },
         { RE::ActorValue::kTwoHanded, menu_keys::two_handed },
         { RE::ActorValue::kArchery, menu_keys::archery },
         { RE::ActorValue::kBlock, menu_keys::block },
@@ -303,8 +303,7 @@ private:
         { RE::ActorValue::kDestruction, menu_keys::destruction },
         { RE::ActorValue::kIllusion, menu_keys::illusion },
         { RE::ActorValue::kRestoration, menu_keys::restoration },
-        { RE::ActorValue::kEnchanting, menu_keys::enchanting }
-    };
+        { RE::ActorValue::kEnchanting, menu_keys::enchanting } };
 
     inline static std::map<RE::FormID, std::string> race_formid_string_map_ = {
         { 0x00013740, "argonian" },
@@ -317,12 +316,12 @@ private:
         { 0x00013747, "orc" },
         { 0x00013748, "redguard" },
         { 0x00013749, "bosmer" },
-        { 0x00012e82, "dragon" }, //"normal" dragon
-        { 0x000e7713, "dragon" }, //alduin
-        { 0x001052a3, "dragon" }, //undead dragon, not sure if needed
-        { 0x020117de, "dragon" }, //also some dragon race, undead dragon, might be soul cain dragon 
-        { 0x0402c88b, "dragon" }, //called black dragon
-        { 0x0402c88c, "dragon" }  //also called black dragon
+        { 0x00012e82, "dragon" },  //"normal" dragon
+        { 0x000e7713, "dragon" },  //alduin
+        { 0x001052a3, "dragon" },  //undead dragon, not sure if needed
+        { 0x020117de, "dragon" },  //also some dragon race, undead dragon, might be soul cain dragon
+        { 0x0402c88b, "dragon" },  //called black dragon
+        { 0x0402c88c, "dragon" }   //also called black dragon
     };
 
     inline static std::map<RE::FormID, std::string_view> race_formid_translation_key_map_ = {
@@ -336,11 +335,11 @@ private:
         { 0x00013747, menu_keys::orc },
         { 0x00013748, menu_keys::redguard },
         { 0x00013749, menu_keys::wood_elf },
-        { 0x00012e82, menu_keys::dragon }, //"normal" dragon
-        { 0x000e7713, menu_keys::dragon }, //alduin
-        { 0x001052a3, menu_keys::dragon }, //undead dragon, not sure if needed
-        { 0x020117de, menu_keys::dragon }, //also some dragon race, undead dragon, might be soul cain dragon 
-        { 0x0402c88b, menu_keys::dragon }, //called black dragon
-        { 0x0402c88c, menu_keys::dragon }  //also called black dragon
+        { 0x00012e82, menu_keys::dragon },  //"normal" dragon
+        { 0x000e7713, menu_keys::dragon },  //alduin
+        { 0x001052a3, menu_keys::dragon },  //undead dragon, not sure if needed
+        { 0x020117de, menu_keys::dragon },  //also some dragon race, undead dragon, might be soul cain dragon
+        { 0x0402c88b, menu_keys::dragon },  //called black dragon
+        { 0x0402c88c, menu_keys::dragon }   //also called black dragon
     };
 };

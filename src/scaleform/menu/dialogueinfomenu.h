@@ -1,7 +1,7 @@
 #pragma once
 #include "CLIK/MovieClip.h"
-#include "CLIK/lazydatasetter.h"
 #include "CLIK/TextField.h"
+#include "CLIK/lazydatasetter.h"
 #include "data/actordata.h"
 #include "handle/dialogueactorhandle.h"
 #include "util/util.h"
@@ -57,6 +57,7 @@ namespace scaleform {
 
         dialogue_info_menu& operator=(const dialogue_info_menu&) = delete;
         dialogue_info_menu& operator=(dialogue_info_menu&&) = delete;
+
     protected:
         dialogue_info_menu() {
             using context = RE::UserEvents::INPUT_CONTEXT_ID;
@@ -141,12 +142,14 @@ namespace scaleform {
         public:
             void LogMessageVarg(LogMessageType, const char* a_fmt, const std::va_list a_arg_list) override {
                 std::string fmt(a_fmt ? a_fmt : "");
-                while (!fmt.empty() && fmt.back() == '\n') { fmt.pop_back(); }
+                while (!fmt.empty() && fmt.back() == '\n') {
+                    fmt.pop_back();
+                }
 
                 std::va_list args;
                 va_copy(args, a_arg_list);
-                std::vector<char>
-                    buf(static_cast<std::size_t>(std::vsnprintf(nullptr, 0, fmt.c_str(), a_arg_list) + 1));
+                std::vector<char> buf(
+                    static_cast<std::size_t>(std::vsnprintf(nullptr, 0, fmt.c_str(), a_arg_list) + 1));
                 std::vsnprintf(buf.data(), buf.size(), fmt.c_str(), args);
                 va_end(args);
 
@@ -166,8 +169,7 @@ namespace scaleform {
         void on_open() {
             using element_t = std::pair<std::reference_wrapper<CLIK::Object>, std::string_view>;
 
-            for (std::array objects{
-                     element_t{ std::ref(root_obj_), "_root.rootObj"sv },
+            for (std::array objects{ element_t{ std::ref(root_obj_), "_root.rootObj"sv },
                      element_t{ std::ref(race_), "_root.rootObj.race"sv },
                      element_t{ std::ref(picture_back_), "_root.rootObj.picture"sv },
                      element_t{ std::ref(key_value_name_), "_root.rootObj.keyValueName"sv },
@@ -184,8 +186,8 @@ namespace scaleform {
                      element_t{ std::ref(key_value_mood_), "_root.rootObj.keyValueMood"sv },
                      element_t{ std::ref(key_value_relation_), "_root.rootObj.keyValueRelation"sv },
                      element_t{ std::ref(key_value_best_skill_first_), "_root.rootObj.keyValueBestSkillFirst"sv },
-                     element_t{ std::ref(key_value_best_skill_second_), "_root.rootObj.keyValueBestSkillSecond"sv }
-                 }; const auto& [object, path] : objects) {
+                     element_t{ std::ref(key_value_best_skill_second_), "_root.rootObj.keyValueBestSkillSecond"sv } };
+                 const auto& [object, path] : objects) {
                 auto& instance = object.get().GetInstance();
                 [[maybe_unused]] const auto success = view_->GetVariable(std::addressof(instance), path.data());
                 assert(success && instance.IsObject());
@@ -257,9 +259,9 @@ namespace scaleform {
                 //icon for gender
                 key_value_name_.data_provider(CLIK::Object{ build_gfx_value_pair(menu_keys::name, actor->GetName()) });
 
-                auto icon_key = util::avatar_util::get_avatar_key(
-                    actor_data::get_race_name_for_icon(actor->GetRace()->formID),
-                    actor_data::get_gender_name_for_icon(actor_base));
+                auto icon_key =
+                    util::avatar_util::get_avatar_key(actor_data::get_race_name_for_icon(actor->GetRace()->formID),
+                        actor_data::get_gender_name_for_icon(actor_base));
                 logger::trace("icon key is: {}"sv, icon_key);
 
                 picture_back_.data_provider(CLIK::Object{ build_gfx_value_icon(icon_key) });
@@ -277,40 +279,35 @@ namespace scaleform {
                 const auto teaches = actor_data::get_is_trainer(actor_base);
                 if (const auto max_training = actor_data::get_max_trainings_level(actor_base);
                     !teaches.empty() && max_training > 0) {
-                    const auto max_string = format(FMT_STRING("({})"), max_training);
-                    key_value_trainer_.data_provider(CLIK::Object{
-                        build_gfx_value_pair_with_max(menu_keys::trainer, teaches, max_string) });
+                    const auto max_string = fmt::format(FMT_STRING("({})"), max_training);
+                    key_value_trainer_.data_provider(
+                        CLIK::Object{ build_gfx_value_pair_with_max(menu_keys::trainer, teaches, max_string) });
                 } else {
                     key_value_trainer_.data_provider(CLIK::Object{ build_gfx_value_pair(menu_keys::trainer, "-") });
                 }
 
-                key_value_vendor_.data_provider(CLIK::Object{
-                    build_gfx_value_pair(menu_keys::vendor,
-                        actor_data::is_vendor(actor) ? menu_keys::yes : menu_keys::no) });
+                key_value_vendor_.data_provider(CLIK::Object{ build_gfx_value_pair(menu_keys::vendor,
+                    actor_data::is_vendor(actor) ? menu_keys::yes : menu_keys::no) });
 
                 key_value_morality_.data_provider(
                     CLIK::Object{ build_gfx_value_pair(menu_keys::morality, actor_data::get_morality(actor_base)) });
-                key_value_assistance_.data_provider(
-                    CLIK::Object{
-                        build_gfx_value_pair(menu_keys::assistence, actor_data::get_assistance(actor_base)) });
-                key_value_confidence_.data_provider(
-                    CLIK::Object{
-                        build_gfx_value_pair(menu_keys::confidence, actor_data::get_confidence(actor_base)) });
-                key_value_aggression_.data_provider(
-                    CLIK::Object{
-                        build_gfx_value_pair(menu_keys::aggression, actor_data::get_aggression(actor_base)) });
+                key_value_assistance_.data_provider(CLIK::Object{
+                    build_gfx_value_pair(menu_keys::assistence, actor_data::get_assistance(actor_base)) });
+                key_value_confidence_.data_provider(CLIK::Object{
+                    build_gfx_value_pair(menu_keys::confidence, actor_data::get_confidence(actor_base)) });
+                key_value_aggression_.data_provider(CLIK::Object{
+                    build_gfx_value_pair(menu_keys::aggression, actor_data::get_aggression(actor_base)) });
 
                 set_mood_data(actor_base);
 
                 set_relationship_data(actor);
 
                 if (auto av_list = actor_data::get_best_skills(actor); !av_list.empty()) {
-                    auto a_value = format(FMT_STRING("({})"), av_list.at(0).second);
-                    key_value_best_skill_first_.data_provider(
-                        CLIK::Object{
-                            build_gfx_value_pair_with_max(menu_keys::best_skills, av_list.at(0).first, a_value) });
+                    auto a_value = fmt::format(FMT_STRING("({})"), av_list.at(0).second);
+                    key_value_best_skill_first_.data_provider(CLIK::Object{
+                        build_gfx_value_pair_with_max(menu_keys::best_skills, av_list.at(0).first, a_value) });
 
-                    a_value = format(FMT_STRING("({})"), av_list.at(1).second);
+                    a_value = fmt::format(FMT_STRING("({})"), av_list.at(1).second);
                     key_value_best_skill_second_.data_provider(
                         CLIK::Object{ build_gfx_value_pair_with_max(" "sv, av_list.at(1).first, a_value) });
                 }
@@ -319,7 +316,7 @@ namespace scaleform {
             logger::trace("done filling the fields with data"sv);
         }
 
-        static void on_close() { }
+        static void on_close() {}
 
         static void log(const RE::FxDelegateArgs& a_params) {
             assert(a_params.GetArgCount() == 1);

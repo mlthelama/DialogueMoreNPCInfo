@@ -32,8 +32,7 @@ namespace handle {
         dialogue_actor_handle& operator=(dialogue_actor_handle&&) = delete;
 
     private:
-        dialogue_actor_handle()
-            : data_(nullptr) {}
+        dialogue_actor_handle() : data_(nullptr) {}
 
         ~dialogue_actor_handle() = default;
 

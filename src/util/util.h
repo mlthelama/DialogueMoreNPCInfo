@@ -13,8 +13,7 @@ namespace util {
         }
 
         static std::string to_lower(std::string s) {
-            for (char& c : s)
-                c = std::tolower(c, std::locale());
+            for (char& c : s) c = std::tolower(c, std::locale());
             return s;
         }
     };

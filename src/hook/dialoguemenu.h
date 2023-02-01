@@ -46,7 +46,7 @@ namespace hook {
                 const auto task = SKSE::GetTaskInterface();
                 task->AddUITask([] {
                     if (const auto menu = RE::UI::GetSingleton()->GetMenu<scaleform::dialogue_info_menu>(
-                        scaleform::dialogue_info_menu::menu_name)) {
+                            scaleform::dialogue_info_menu::menu_name)) {
                         menu->refresh_items();
                     }
                 });
@@ -57,7 +57,7 @@ namespace hook {
 
     inline void install_dialogue_menu_hook() {
         //Dialoguemenu
-        REL::Relocation<std::uintptr_t> v_table_dm(REL::ID{ offset::get_dialog_menu }); //215255 AE
+        REL::Relocation<std::uintptr_t> v_table_dm(REL::ID{ offset::get_dialog_menu });  //215255 AE
         dialogue_menu_hook::process = v_table_dm.write_vfunc(0x4, &dialogue_menu_hook::process_message_hook);
         dialogue_menu_hook::advance = v_table_dm.write_vfunc(0x5, &dialogue_menu_hook::advance_movie_hook);
     }

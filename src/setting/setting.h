@@ -28,7 +28,7 @@ public:
         log_level_ = ini.GetLongValue("General", "iLogLevel", 2);
         avatar_set_ = ini.GetLongValue("General", "iAvatarSet", 0);
         hide_faction_ = ini.GetBoolValue("General", "bHideFaction", false);
-        toggle_key_ = ini.GetLongValue("General", "iToggleButton", 34); //G
+        toggle_key_ = ini.GetLongValue("General", "iToggleButton", 34);  //G
 
         pos_x_ = ini.GetLongValue("Window", "iPosX", 405);
         pos_y_ = ini.GetLongValue("Window", "iPosY", 320);
@@ -53,43 +53,23 @@ public:
         (void)ini.SaveFile(ini_path_);
     }
 
-    static int get_log_level() {
-        return log_level_;
-    }
+    static int get_log_level() { return log_level_; }
 
-    static int get_avatar_set() {
-        return avatar_set_;
-    }
+    static int get_avatar_set() { return avatar_set_; }
 
-    static bool get_hide_faction() {
-        return hide_faction_;
-    }
+    static bool get_hide_faction() { return hide_faction_; }
 
-    static int get_toggle_key() {
-        return toggle_key_;
-    }
+    static int get_toggle_key() { return toggle_key_; }
 
-    static int get_pos_x() {
-        return pos_x_;
-    }
+    static int get_pos_x() { return pos_x_; }
 
-    static int get_pos_y() {
-        return pos_y_;
-    }
+    static int get_pos_y() { return pos_y_; }
 
-    static int get_scale_x() {
-        return scale_x_;
-    }
+    static int get_scale_x() { return scale_x_; }
 
-    static int get_scale_y() {
-        return scale_y_;
-    }
+    static int get_scale_y() { return scale_y_; }
 
-    static bool get_hand_to_hand() {
-        return hand_to_hand_;
-    }
+    static bool get_hand_to_hand() { return hand_to_hand_; }
 
-    static bool get_show_window() {
-        return show_window_;
-    }
+    static bool get_show_window() { return show_window_; }
 };

@@ -11,11 +11,9 @@ namespace CLIK {
         lazy_data_setter(lazy_data_setter&&) = default;
         using super::super;
 
-        explicit lazy_data_setter(const super& a_rhs)
-            : super(a_rhs) {}
+        explicit lazy_data_setter(const super& a_rhs) : super(a_rhs) {}
 
-        explicit lazy_data_setter(super&& a_rhs)
-            : super(std::move(a_rhs)) {}
+        explicit lazy_data_setter(super&& a_rhs) : super(std::move(a_rhs)) {}
 
         ~lazy_data_setter() = default;
 
