@@ -24,5 +24,6 @@
 git clone https://github.com/mlthelama/DialogueMoreNPCInfo.git
 cd DialogueMoreNPCInfo
 
-cmake -B build -S .
+cmake --preset vs2022-windows
+cmake --build --preset vs2022-windows --config Release
 ```

@@ -5,11 +5,7 @@
   "homepage": "https://github.com/mlthelama/DialogueMoreNPCInfo",
   "license": "MIT",
   "dependencies": [
-    "boost-atomic",
-    "boost-stl-interfaces",
-    "span-lite",
-    "spdlog",
     "simpleini",
-    "commonlibsse-ng-flatrim"
+    "commonlibsse-ng"
   ]
 }
