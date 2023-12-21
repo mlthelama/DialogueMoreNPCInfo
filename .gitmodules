@@ -1,0 +1,3 @@
+[submodule "extern/IconsForDMNI"]
+	path = extern/IconsForDMNI
+	url = https://github.com/mlthelama/IconsForDMNI.git

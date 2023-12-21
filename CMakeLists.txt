@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.25)
+
+set(NAME "DialogueMoreNPCInfo")
+set(VERSION 1.0.8.0)
 
 # ---- Options ----
 
@@ -33,8 +36,8 @@ set(BUILD_TESTS OFF)
 # ---- Project ----
 
 project(
-	DialogueMoreNPCInfo
-	VERSION 1.0.8.0
+	${NAME}
+	VERSION ${VERSION}
 	LANGUAGES CXX
 )
 
