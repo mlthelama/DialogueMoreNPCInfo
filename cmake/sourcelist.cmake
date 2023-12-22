@@ -6,18 +6,33 @@ set(sources ${sources}
 	src/CLIK/TextField.h
 	src/CLIK/lazydatasetter.h
 	src/PCH.h
+	src/actor/actor_data.cpp
+	src/actor/actor_data.h
 	src/data/actordata.h
-	src/event.h
-	src/event/keymanager.h
+	src/event/event.cpp
+	src/event/event.h
+	src/event/input_event.cpp
+	src/event/input_event.h
 	src/handle/dialogueactorhandle.h
-	src/hook.h
-	src/hook/dialoguemenu.h
+	src/hook/dialogue_menu_hook.cpp
+	src/hook/dialogue_menu_hook.h
+	src/hook/hook.cpp
+	src/hook/hook.h
 	src/main.cpp
-	src/scaleform/menu/dialogueinfomenu.h
+	src/mod/mod_manager.cpp
+	src/mod/mod_manager.h
+	src/scaleform/menu/dialogue_info_menu.cpp
+	src/scaleform/menu/dialogue_info_menu.h
+	src/scaleform/scaleform.cpp
 	src/scaleform/scaleform.h
 	src/setting/setting.h
 	src/util/constant.h
+	src/util/file.cpp
+	src/util/file.h
+	src/util/form.cpp
+	src/util/form.h
 	src/util/menukeys.h
 	src/util/offset.h
+	src/util/type_util.h
 	src/util/util.h
 )
