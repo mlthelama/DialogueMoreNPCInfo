@@ -2,6 +2,7 @@
 #include "util/constant.h"
 #include "util/menukeys.h"
 #include "util/util.h"
+#include "util/type_util.h"
 
 #include "util/offset.h"
 
@@ -45,7 +46,7 @@ public:
                     std::ranges::find(faction_form_list_, form_id) != faction_form_list_.end()) {
                     logger::trace("name {}, formId {}, rank {}"sv,
                         name,
-                        util::string_util::int_to_hex(form_id),
+                        util::type_util::int_to_hex(form_id),
                         a_rank);
                     faction = name;
                     return true;

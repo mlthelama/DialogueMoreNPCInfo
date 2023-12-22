@@ -1,31 +1,21 @@
-#pragma once
-#include "scaleform/menu/dialogueinfomenu.h"
+﻿#include "input_event.h"
+#include "scaleform/menu/dialogue_info_menu.h"
 #include "setting/setting.h"
 
-class key_manager final : public RE::BSTEventSink<RE::InputEvent*> {
-public:
-    using event_result = RE::BSEventNotifyControl;
-
-    static key_manager* get_singleton() {
-        static key_manager singleton;
+namespace event {
+    
+    input_event* input_event::get_singleton() {
+        static input_event singleton;
         return std::addressof(singleton);
     }
-
-    static void sink() { RE::BSInputDeviceManager::GetSingleton()->AddEventSink(get_singleton()); }
-
-
-    key_manager(const key_manager&) = delete;
-    key_manager(key_manager&&) = delete;
-
-    key_manager& operator=(const key_manager&) = delete;
-    key_manager& operator=(key_manager&&) = delete;
-
-protected:
-    event_result ProcessEvent(RE::InputEvent* const* a_event,
-        [[maybe_unused]] RE::BSTEventSource<RE::InputEvent*>* a_event_source) override {
+    
+    void input_event::sink() { RE::BSInputDeviceManager::GetSingleton()->AddEventSink(get_singleton()); }
+    
+    input_event::event_result input_event::ProcessEvent(RE::InputEvent* const* a_event,
+        [[maybe_unused]] RE::BSTEventSource<RE::InputEvent*>* a_event_source) {
         using event_type = RE::INPUT_EVENT_TYPE;
         using device_type = RE::INPUT_DEVICE;
-
+        
         key_ = static_cast<uint32_t>(setting::get_toggle_key());
 
         if (key_ == k_invalid) {
@@ -100,15 +90,10 @@ protected:
         }
         return event_result::kContinue;
     }
-
-private:
-    key_manager() = default;
-
-    ~key_manager() override = default;
-
-    static uint32_t get_gamepad_index(const RE::BSWin32GamepadDevice::Key a_key) {
+    
+    uint32_t input_event::get_gamepad_index(const RE::BSWin32GamepadDevice::Key a_key) { 
         using key = RE::BSWin32GamepadDevice::Key;
-
+        
         uint32_t index;
         switch (a_key) {
             case key::kUp:
@@ -167,12 +152,4 @@ private:
         return index != k_invalid ? index + k_gamepad_offset : k_invalid;
     }
 
-    enum : uint32_t {
-        k_invalid = static_cast<uint32_t>(-1),
-        k_keyboard_offset = 0,
-        k_mouse_offset = 256,
-        k_gamepad_offset = 266
-    };
-
-    uint32_t key_ = k_invalid;
-};
+}  // event
