@@ -1,8 +1,8 @@
 #pragma once
 #include "util/constant.h"
 #include "util/menukeys.h"
-#include "util/util.h"
 #include "util/type_util.h"
+#include "util/util.h"
 
 #include "util/offset.h"
 
@@ -44,10 +44,7 @@ public:
                 //logger::trace("name {}, formId {}, rank {}"sv, name, intToHex(formID), a_rank);
                 if (const auto form_id(a_faction->GetFormID());
                     std::ranges::find(faction_form_list_, form_id) != faction_form_list_.end()) {
-                    logger::trace("name {}, formId {}, rank {}"sv,
-                        name,
-                        util::type_util::int_to_hex(form_id),
-                        a_rank);
+                    logger::trace("name {}, formId {}, rank {}"sv, name, util::type_util::int_to_hex(form_id), a_rank);
                     faction = name;
                     return true;
                 }

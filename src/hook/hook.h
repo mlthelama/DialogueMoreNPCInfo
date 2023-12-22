@@ -6,4 +6,3 @@ namespace hook {
         static void install();
     };
 }  // hook
-

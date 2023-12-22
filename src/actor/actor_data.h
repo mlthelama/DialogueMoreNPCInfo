@@ -3,8 +3,6 @@
 namespace actor {
     class actor_data {
     public:
-        
-        
         actor_data(const actor_data&) = delete;
         actor_data(actor_data&&) = delete;
 
@@ -14,7 +12,5 @@ namespace actor {
     private:
         actor_data() = default;
         ~actor_data() = default;
-        
-        
     };
 }  // actor

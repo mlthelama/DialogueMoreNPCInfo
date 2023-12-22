@@ -6,4 +6,3 @@ namespace scaleform {
         static void Register();
     };
 }  // scaleform
-

@@ -3,19 +3,19 @@
 #include "setting/setting.h"
 
 namespace event {
-    
+
     input_event* input_event::get_singleton() {
         static input_event singleton;
         return std::addressof(singleton);
     }
-    
+
     void input_event::sink() { RE::BSInputDeviceManager::GetSingleton()->AddEventSink(get_singleton()); }
-    
+
     input_event::event_result input_event::ProcessEvent(RE::InputEvent* const* a_event,
         [[maybe_unused]] RE::BSTEventSource<RE::InputEvent*>* a_event_source) {
         using event_type = RE::INPUT_EVENT_TYPE;
         using device_type = RE::INPUT_DEVICE;
-        
+
         key_ = static_cast<uint32_t>(setting::get_toggle_key());
 
         if (key_ == k_invalid) {
@@ -90,10 +90,10 @@ namespace event {
         }
         return event_result::kContinue;
     }
-    
-    uint32_t input_event::get_gamepad_index(const RE::BSWin32GamepadDevice::Key a_key) { 
+
+    uint32_t input_event::get_gamepad_index(const RE::BSWin32GamepadDevice::Key a_key) {
         using key = RE::BSWin32GamepadDevice::Key;
-        
+
         uint32_t index;
         switch (a_key) {
             case key::kUp:

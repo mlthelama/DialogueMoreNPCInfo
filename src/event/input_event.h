@@ -4,7 +4,7 @@ namespace event {
     class input_event final : public RE::BSTEventSink<RE::InputEvent*> {
     public:
         using event_result = RE::BSEventNotifyControl;
-        
+
         static input_event* get_singleton();
 
         static void sink();
@@ -21,17 +21,16 @@ namespace event {
     private:
         input_event() = default;
         ~input_event() override = default;
-        
+
         static uint32_t get_gamepad_index(RE::BSWin32GamepadDevice::Key a_key);
-        
+
         enum : uint32_t {
             k_invalid = static_cast<uint32_t>(-1),
             k_keyboard_offset = 0,
             k_mouse_offset = 256,
             k_gamepad_offset = 266
         };
-        
+
         uint32_t key_ = k_invalid;
     };
 }  // event
-

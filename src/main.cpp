@@ -1,8 +1,8 @@
-#include "scaleform/scaleform.h"
-#include "setting/setting.h"
 #include "event/event.h"
 #include "hook/hook.h"
 #include "mod/mod_manager.h"
+#include "scaleform/scaleform.h"
+#include "setting/setting.h"
 
 void init_logger() {
     if (static bool initialized = false; !initialized) {
@@ -10,7 +10,7 @@ void init_logger() {
     } else {
         return;
     }
-    
+
     try {
         auto path = logger::log_directory();
         if (!path) {
@@ -48,30 +48,30 @@ void init_logger() {
 
 void init_mod_support() {
     auto* mod_manager = mod::mod_manager::get_singleton();
-    
+
     //check for mods here
     mod_manager->set_hand_to_hand(LoadLibrary(L"Data/SKSE/Plugins/HandToHand.dll"));
 }
 
 EXTERN_C [[maybe_unused]] __declspec(dllexport) bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse) {
     init_logger();
-    
+
     logger::info("{} loading"sv, Version::PROJECT);
     logger::info("Game version {}"sv, a_skse->RuntimeVersion().string());
 
     Init(a_skse);
-    
+
     SKSE::GetMessagingInterface()->RegisterListener([](SKSE::MessagingInterface::Message* a_msg) {
         switch (a_msg->type) {
             case SKSE::MessagingInterface::kDataLoaded:
                 logger::info("Data loaded"sv);
-                
+
                 init_mod_support();
-                
+
                 hook::hook::install();
                 event::event::sink_event_handler();
                 scaleform::scaleform::Register();
-                
+
                 logger::info("Done with adding"sv);
                 break;
         }

@@ -1,6 +1,6 @@
 ﻿#include "dialogue_info_menu.h"
-#include "handle/dialogueactorhandle.h"
 #include "data/actordata.h"
+#include "handle/dialogueactorhandle.h"
 #include "util/menukeys.h"
 #include "util/type_util.h"
 
@@ -186,7 +186,7 @@ namespace scaleform {
         value.SetMember("valueText", { a_value });
         return value;
     }
-    
+
     RE::GFxValue dialogue_info_menu::build_gfx_value_pair_with_max(const std::string_view& a_key,
         const std::string_view& a_value,
         const std::string_view& a_max) {
@@ -197,10 +197,10 @@ namespace scaleform {
         value.SetMember("valueMaxText", { a_max });
         return value;
     }
-    
+
     void dialogue_info_menu::update_elements() {
         logger::trace("going to fill the fields with data"sv);
-        
+
         if (auto actor = handle::dialogue_actor_handle::get_singleton()->get_actor()) {
             auto actor_base = actor->GetActorBase();
             logger::trace("got Actor {}, formid {}, baseformid {}"sv,
@@ -250,12 +250,12 @@ namespace scaleform {
 
             key_value_morality_.data_provider(
                 CLIK::Object{ build_gfx_value_pair(menu_keys::morality, actor_data::get_morality(actor_base)) });
-            key_value_assistance_.data_provider(CLIK::Object{
-                build_gfx_value_pair(menu_keys::assistence, actor_data::get_assistance(actor_base)) });
-            key_value_confidence_.data_provider(CLIK::Object{
-                build_gfx_value_pair(menu_keys::confidence, actor_data::get_confidence(actor_base)) });
-            key_value_aggression_.data_provider(CLIK::Object{
-                build_gfx_value_pair(menu_keys::aggression, actor_data::get_aggression(actor_base)) });
+            key_value_assistance_.data_provider(
+                CLIK::Object{ build_gfx_value_pair(menu_keys::assistence, actor_data::get_assistance(actor_base)) });
+            key_value_confidence_.data_provider(
+                CLIK::Object{ build_gfx_value_pair(menu_keys::confidence, actor_data::get_confidence(actor_base)) });
+            key_value_aggression_.data_provider(
+                CLIK::Object{ build_gfx_value_pair(menu_keys::aggression, actor_data::get_aggression(actor_base)) });
 
             set_mood_data(actor_base);
 
@@ -276,21 +276,21 @@ namespace scaleform {
     }
 
     void dialogue_info_menu::on_close() {}
-    
+
     void dialogue_info_menu::log(const RE::FxDelegateArgs& a_params) {
         logger::debug("{}: {}"sv, menu_name, a_params[0].GetString());
     }
-    
+
     void dialogue_info_menu::set_relationship_data(RE::Actor* a_actor) {
         key_value_relation_.data_provider(CLIK::Object{
             build_gfx_value_pair(menu_keys::relation, actor_data::get_relationship_rank_string(a_actor)) });
     }
-    
+
     void dialogue_info_menu::set_mood_data(RE::TESNPC* a_actor_base) {
         key_value_mood_.data_provider(
             CLIK::Object{ build_gfx_value_pair(menu_keys::mood, actor_data::get_mood(a_actor_base)) });
     }
-    
+
     void dialogue_info_menu::adjust_position() {
         root_obj_.X(setting::get_pos_x());
         root_obj_.Y(setting::get_pos_y());
@@ -303,5 +303,5 @@ namespace scaleform {
         logger::trace("Scaled Window");
     }
 
-    
+
 }  // scaleform

@@ -20,4 +20,3 @@ namespace logger = SKSE::log;
 #define EXTERN_C extern "C"
 
 #include "Version.h"
-

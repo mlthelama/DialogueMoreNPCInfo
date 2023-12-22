@@ -56,5 +56,5 @@ namespace hook {
         }
         return advance_(this, a_interval, a_current_time);
     }
-    
+
 }  // hook
